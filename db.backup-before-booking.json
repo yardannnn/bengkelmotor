@@ -1,0 +1,340 @@
+{
+  "products": [
+    {
+      "id": "p001",
+      "cat": "ban",
+      "nm": "Ban luar tubeless matic",
+      "ukuran": "80/90-14",
+      "harga": 210000,
+      "stok": 11,
+      "minStok": 2,
+      "aktif": true
+    },
+    {
+      "id": "p002",
+      "cat": "ban",
+      "nm": "Ban luar tubeless matic",
+      "ukuran": "90/90-14",
+      "harga": 245000,
+      "stok": 5,
+      "minStok": 2,
+      "aktif": true
+    },
+    {
+      "id": "p003",
+      "cat": "ban",
+      "nm": "Ban luar tubeless matic",
+      "ukuran": "100/80-14",
+      "harga": 290000,
+      "stok": 3,
+      "minStok": 2,
+      "aktif": true
+    },
+    {
+      "id": "p004",
+      "cat": "ban",
+      "nm": "Ban luar tubeless matic",
+      "ukuran": "110/70-13",
+      "harga": 300000,
+      "stok": 2,
+      "minStok": 2,
+      "aktif": true
+    },
+    {
+      "id": "p005",
+      "cat": "ban",
+      "nm": "Ban luar bebek",
+      "ukuran": "70/90-17",
+      "harga": 175000,
+      "stok": 6,
+      "minStok": 2,
+      "aktif": true
+    },
+    {
+      "id": "p006",
+      "cat": "ban",
+      "nm": "Ban luar bebek",
+      "ukuran": "80/90-17",
+      "harga": 205000,
+      "stok": 4,
+      "minStok": 2,
+      "aktif": true
+    },
+    {
+      "id": "p007",
+      "cat": "ban",
+      "nm": "Ban luar sport",
+      "ukuran": "100/80-17",
+      "harga": 330000,
+      "stok": 2,
+      "minStok": 2,
+      "aktif": true
+    },
+    {
+      "id": "p008",
+      "cat": "ban",
+      "nm": "Ban luar sport",
+      "ukuran": "120/70-17",
+      "harga": 420000,
+      "stok": 0,
+      "minStok": 2,
+      "aktif": true
+    },
+    {
+      "id": "p009",
+      "cat": "bandalam",
+      "nm": "Ban dalam ring 17",
+      "ukuran": "2.25/2.50-17",
+      "harga": 35000,
+      "stok": 12,
+      "minStok": 2,
+      "aktif": true
+    },
+    {
+      "id": "p010",
+      "cat": "bandalam",
+      "nm": "Ban dalam ring 17",
+      "ukuran": "2.50/2.75-17",
+      "harga": 38000,
+      "stok": 10,
+      "minStok": 2,
+      "aktif": true
+    },
+    {
+      "id": "p011",
+      "cat": "bandalam",
+      "nm": "Ban dalam ring 14",
+      "ukuran": "80/90-14",
+      "harga": 40000,
+      "stok": 5,
+      "minStok": 2,
+      "aktif": true
+    },
+    {
+      "id": "p012",
+      "cat": "oli",
+      "nm": "Oli mesin matic 0.8 L",
+      "ukuran": "10W-30",
+      "harga": 52000,
+      "stok": 15,
+      "minStok": 2,
+      "aktif": true
+    },
+    {
+      "id": "p013",
+      "cat": "oli",
+      "nm": "Oli mesin matic 1 L",
+      "ukuran": "10W-40",
+      "harga": 62000,
+      "stok": 10,
+      "minStok": 2,
+      "aktif": true
+    },
+    {
+      "id": "p014",
+      "cat": "oli",
+      "nm": "Oli mesin bebek & sport 1 L",
+      "ukuran": "20W-50",
+      "harga": 55000,
+      "stok": 8,
+      "minStok": 2,
+      "aktif": true
+    },
+    {
+      "id": "p015",
+      "cat": "oli",
+      "nm": "Oli gardan 120 ml",
+      "ukuran": "SAE 80W-90",
+      "harga": 17000,
+      "stok": 20,
+      "minStok": 2,
+      "aktif": true
+    }
+  ],
+  "orders": [
+    {
+      "kode": "WEB-261008-0003",
+      "t": "2026-10-08T03:52:11.073Z",
+      "sumber": "web",
+      "status": "baru",
+      "nama": "risli",
+      "hp": "0812234456",
+      "catatan": "",
+      "ambil": "ambil",
+      "items": [
+        {
+          "id": "p001",
+          "nm": "Ban luar tubeless matic",
+          "ukuran": "80/90-14",
+          "harga": 210000,
+          "qty": 1
+        }
+      ],
+      "total": 210000
+    },
+    {
+      "kode": "WEB-261008-0002",
+      "t": "2026-10-08T03:37:10.861Z",
+      "sumber": "web",
+      "status": "batal",
+      "nama": "risli",
+      "hp": "0812234456",
+      "catatan": "",
+      "ambil": "pasang",
+      "items": [
+        {
+          "id": "p001",
+          "nm": "Ban luar tubeless matic",
+          "ukuran": "80/90-14",
+          "harga": 210000,
+          "qty": 1
+        }
+      ],
+      "total": 210000
+    },
+    {
+      "kode": "WEB-261008-0001",
+      "t": "2026-10-08T03:36:11.058Z",
+      "sumber": "web",
+      "status": "selesai",
+      "nama": "risli",
+      "hp": "0812234456",
+      "catatan": "",
+      "ambil": "pasang",
+      "items": [
+        {
+          "id": "p001",
+          "nm": "Ban luar tubeless matic",
+          "ukuran": "80/90-14",
+          "harga": 210000,
+          "qty": 1
+        }
+      ],
+      "total": 210000
+    }
+  ],
+  "log": [
+    {
+      "t": "2026-10-08T03:52:11.072Z",
+      "id": "p001",
+      "nm": "Ban luar tubeless matic 80/90-14",
+      "delta": -1,
+      "sisa": 11,
+      "jenis": "pesanan web",
+      "ket": "WEB-261008-0003 · risli"
+    },
+    {
+      "t": "2026-10-08T03:50:59.656Z",
+      "id": "p001",
+      "nm": "Ban luar tubeless matic 80/90-14",
+      "delta": 1,
+      "sisa": 12,
+      "jenis": "pesanan batal",
+      "ket": "WEB-261008-0002"
+    },
+    {
+      "t": "2026-10-08T03:49:37.980Z",
+      "id": "p001",
+      "nm": "Ban luar tubeless matic 80/90-14",
+      "delta": 1,
+      "sisa": 11,
+      "jenis": "stok masuk",
+      "ket": ""
+    },
+    {
+      "t": "2026-10-08T03:49:37.759Z",
+      "id": "p001",
+      "nm": "Ban luar tubeless matic 80/90-14",
+      "delta": 1,
+      "sisa": 10,
+      "jenis": "stok masuk",
+      "ket": ""
+    },
+    {
+      "t": "2026-10-08T03:49:37.592Z",
+      "id": "p001",
+      "nm": "Ban luar tubeless matic 80/90-14",
+      "delta": 1,
+      "sisa": 9,
+      "jenis": "stok masuk",
+      "ket": ""
+    },
+    {
+      "t": "2026-10-08T03:49:37.424Z",
+      "id": "p001",
+      "nm": "Ban luar tubeless matic 80/90-14",
+      "delta": 1,
+      "sisa": 8,
+      "jenis": "stok masuk",
+      "ket": ""
+    },
+    {
+      "t": "2026-10-08T03:49:37.077Z",
+      "id": "p001",
+      "nm": "Ban luar tubeless matic 80/90-14",
+      "delta": 1,
+      "sisa": 7,
+      "jenis": "stok masuk",
+      "ket": ""
+    },
+    {
+      "t": "2026-10-08T03:49:36.905Z",
+      "id": "p001",
+      "nm": "Ban luar tubeless matic 80/90-14",
+      "delta": 1,
+      "sisa": 6,
+      "jenis": "stok masuk",
+      "ket": ""
+    },
+    {
+      "t": "2026-10-08T03:49:33.298Z",
+      "id": "p001",
+      "nm": "Ban luar tubeless matic 80/90-14",
+      "delta": 1,
+      "sisa": 5,
+      "jenis": "stok masuk",
+      "ket": ""
+    },
+    {
+      "t": "2026-10-08T03:37:10.861Z",
+      "id": "p001",
+      "nm": "Ban luar tubeless matic 80/90-14",
+      "delta": -1,
+      "sisa": 4,
+      "jenis": "pesanan web",
+      "ket": "WEB-261008-0002 · risli"
+    },
+    {
+      "t": "2026-10-08T03:36:11.058Z",
+      "id": "p001",
+      "nm": "Ban luar tubeless matic 80/90-14",
+      "delta": -1,
+      "sisa": 5,
+      "jenis": "pesanan web",
+      "ket": "WEB-261008-0001 · risli"
+    }
+  ],
+  "seq": {
+    "order": 3,
+    "product": 15,
+    "kas": 1
+  },
+  "admin": {
+    "salt": "ead6371adbfe28a80f3e7dc98470af78",
+    "hash": "29ba8634a5fb98933bd1dfe204ba68c779009f81488db8686551586316383bd2"
+  },
+  "kas": [
+    {
+      "id": "k1",
+      "tgl": "2026-10-08",
+      "t": "2026-10-08T03:36:11.058Z",
+      "jenis": "masuk",
+      "kategori": "Penjualan barang",
+      "ket": "WEB-261008-0001 · risli",
+      "jumlah": 210000,
+      "metode": "tunai",
+      "auto": true,
+      "ref": "WEB-261008-0001"
+    }
+  ]
+}

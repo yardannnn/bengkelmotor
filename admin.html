@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Admin Stok — Flydan Bengkel Motor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,800;62..125,900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F3F0E8;--paper-2:#E8E3D6;--ink:#16140F;--ink-2:#3A362D;--muted:#6E685B;--line:#CFC8B6;--signal:#F2B705;--ok:#2F7D3A;--bad:#B2361F;--r:4px;
+  --display:"Archivo","Arial Narrow",sans-serif;--body:"IBM Plex Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.5 var(--body);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1;text-transform:uppercase;font-stretch:78%;font-weight:900}
+:focus-visible{outline:3px solid var(--signal);outline-offset:2px}
+button,input,select{font:inherit;color:inherit}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:var(--r);border:2px solid var(--ink);background:transparent;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.pri{background:var(--signal);border-color:var(--signal);color:#1A1400}.btn.pri:hover{background:#FFC814;color:#1A1400}
+.btn.dark{background:var(--ink);color:var(--signal)}
+.btn.sm{min-height:34px;padding:0 10px;font-size:14px}
+.btn.danger{border-color:var(--bad);color:var(--bad)}.btn.danger:hover{background:var(--bad);color:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+input[type=text],input[type=number],input[type=password],input[type=search],select{background:#FBF9F4;border:1.5px solid var(--ink-2);border-radius:var(--r);padding:8px 12px;min-height:40px;width:100%}
+input:focus,select:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px var(--signal)}
+label{font-size:13px;font-weight:600;display:block;margin-bottom:4px}
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted)}
+
+/* login */
+#login{min-height:100vh;display:grid;place-items:center;padding:24px}
+.login-card{width:min(380px,100%);border:2px solid var(--ink);border-radius:var(--r);padding:28px;background:#FBF9F4}
+.login-card h1{font-size:40px;margin:6px 0 20px}
+.err{color:var(--bad);font-size:14px;min-height:20px;margin:8px 0}
+
+/* shell */
+header{background:var(--ink);color:var(--paper)}
+header .in{max-width:1280px;margin:0 auto;padding:0 20px;min-height:60px;display:flex;align-items:center;gap:20px;justify-content:space-between;flex-wrap:wrap}
+header h1{font-size:24px}
+header h1 small{display:block;font:500 11px/1.2 var(--mono);letter-spacing:.1em;color:var(--signal);margin-top:2px}
+header nav{display:flex;gap:4px;flex-wrap:wrap}
+header nav button{appearance:none;border:0;background:transparent;color:#CFC8B6;padding:0 14px;min-height:60px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent}
+header nav button[aria-selected="true"]{color:var(--paper);border-color:var(--signal)}
+header nav .badge{background:var(--signal);color:#1A1400;border-radius:999px;font:600 11px/1 var(--mono);padding:3px 6px;margin-left:6px}
+header .right{display:flex;gap:10px;align-items:center}
+header .btn{border-color:#5A5547;color:var(--paper);min-height:36px}
+main{max-width:1280px;margin:0 auto;padding:24px 20px 80px}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--ink);border-radius:var(--r);margin-bottom:24px;background:#FBF9F4}
+.stat{padding:16px 18px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat span{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.stat b{display:block;font:900 30px/1.1 var(--display);font-stretch:80%;margin-top:6px}
+.stat.warn b{color:var(--bad)}
+@media (max-width:760px){.stats{grid-template-columns:1fr 1fr}.stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+
+.bar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px}
+.bar h2{font-size:30px}
+.bar .tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.bar .tools input,.bar .tools select{width:auto;min-width:160px}
+
+.tbl-wrap{border:2px solid var(--ink);border-radius:var(--r);overflow:auto;background:#FBF9F4}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th{text-align:left;font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:12px;border-bottom:2px solid var(--ink);background:var(--paper-2);position:sticky;top:0}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-family:var(--mono)}
+tr.low td{background:rgba(242,183,5,.12)}
+tr.out td{background:rgba(178,54,31,.08)}
+.chip{display:inline-block;font:500 11px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--ink-2);border-radius:3px;padding:4px 6px}
+.chip.baru{background:var(--signal);border-color:var(--signal)}
+.chip.selesai{background:#DDF3E2;border-color:var(--ok);color:var(--ok)}
+.chip.batal{background:#F6DDD7;border-color:var(--bad);color:var(--bad)}
+.stokcell{display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.stokcell b{font:600 18px var(--mono);min-width:36px;text-align:right}
+.adj{display:flex;gap:6px;align-items:center}
+.adj input{width:70px;min-height:34px;padding:4px 8px;text-align:right}
+.delta.plus{color:var(--ok)}.delta.min{color:var(--bad)}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+
+/* kasir */
+.pos{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:start}
+.pos-list{border:2px solid var(--ink);border-radius:var(--r);background:#FBF9F4;max-height:70vh;overflow:auto}
+.pos-item{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}
+.pos-item small{display:block;color:var(--muted)}
+.pos-cart{border:2px solid var(--ink);border-radius:var(--r);padding:18px;background:#FBF9F4;position:sticky;top:16px}
+.pos-cart h3{font-size:26px;margin-bottom:12px}
+.pline{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line)}
+.qty{display:inline-flex;border:1.5px solid var(--ink);border-radius:var(--r)}
+.qty button{appearance:none;border:0;background:transparent;width:32px;height:32px;font-weight:600;cursor:pointer}
+.qty button:disabled{opacity:.3}
+.qty span{min-width:28px;display:grid;place-items:center;font-family:var(--mono)}
+.ptotal{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0}
+.ptotal b{font:900 30px/1 var(--display);font-stretch:80%}
+@media (max-width:900px){.pos{grid-template-columns:1fr}.pos-cart{position:static}}
+
+/* jasa di kasir */
+.jasa-box{border:2px solid var(--ink);border-radius:var(--r);background:#FBF9F4;margin-bottom:16px}
+.jasa-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 14px;border-bottom:1px solid var(--line)}
+.jasa-head h3{font-size:22px}
+.jasa-grid{display:flex;flex-wrap:wrap;gap:6px;padding:12px 14px}
+.jbtn{appearance:none;border:1.5px solid var(--ink);background:transparent;border-radius:var(--r);padding:6px 10px;cursor:pointer;text-align:left;font-size:13px;line-height:1.25}
+.jbtn small{display:block;font-family:var(--mono);color:var(--muted)}
+.jbtn:hover{background:var(--signal)}
+.jbtn:disabled{opacity:.35;cursor:not-allowed;background:transparent}
+.jasa-custom{display:grid;grid-template-columns:1fr 130px auto;gap:6px;padding:0 14px 12px}
+a{color:inherit}
+header .right{margin-left:auto}
+.pline{grid-template-columns:1fr 116px 92px!important}
+.pline > :last-child{justify-self:end}
+.jp{display:flex;align-items:center;gap:4px;font:500 13px var(--mono)}
+.pline .jprice{width:100%;min-height:32px;padding:4px 8px;text-align:right;font-family:var(--mono)}
+.tag-jasa{font:500 10px/1 var(--mono);letter-spacing:.06em;background:var(--signal);padding:2px 5px;border-radius:3px;margin-right:4px;vertical-align:middle}
+.bk-link{background:var(--signal);border-radius:var(--r);padding:8px 10px;font-size:13px;margin-bottom:10px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.chip.dikerjakan{background:#DCE8F7;border-color:#2F5D8A;color:#2F5D8A}
+
+/* daftar jasa */
+#tbJasa td.num input{width:110px;text-align:right;min-height:34px;padding:4px 8px;font-family:var(--mono)}
+#tbJasa input.dirty{background:#FFF3C4;border-color:#8A5A00;font-weight:600}
+#tbJasa tr.changed td:first-child{box-shadow:inset 4px 0 0 var(--signal)}
+section[data-panel=jasa]{padding-bottom:70px}
+#tbJasa .nm input{min-height:34px;padding:4px 8px;font-weight:600}
+#tbJasa .ord{display:flex;gap:2px}
+#tbJasa .ord button{min-height:30px;padding:0 8px}
+.savebar{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:var(--r);margin-top:12px}
+
+/* laba */
+.margin{display:block;font-size:12px;font-family:var(--mono)}
+.margin.neg{color:var(--bad)}
+.nomodal{font-size:12px;color:#8A5A00;font-weight:600}
+.lr{width:100%;border-collapse:collapse;min-width:0;font-size:15px}
+.lr td{padding:7px 0;border-bottom:1px dashed var(--line)}
+.lr td:last-child{text-align:right;font-family:var(--mono);white-space:nowrap}
+.lr tr.sub td{padding-left:14px;color:var(--ink-2);font-size:14px}
+.lr tr.tot td{border-top:2px solid var(--ink);border-bottom:0;font-weight:700;padding-top:10px}
+.lr tr.big td{font-size:18px}
+.warnbox{background:#FFF3C4;border:1.5px solid #8A5A00;border-radius:var(--r);padding:10px 12px;font-size:13px;margin-bottom:12px}
+.pos-laba{font-size:13px;color:var(--ink-2);margin:-6px 0 12px;display:flex;justify-content:space-between}
+
+/* keuangan */
+.fin-range{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.fin-range input[type=date]{background:#FBF9F4;border:1.5px solid var(--ink-2);border-radius:var(--r);padding:6px 10px;min-height:40px;font:inherit}
+.seg{display:inline-flex;border:2px solid var(--ink);border-radius:var(--r);overflow:hidden}
+.seg button{appearance:none;border:0;background:transparent;padding:0 12px;min-height:36px;font-weight:600;cursor:pointer}
+.seg button+button{border-left:2px solid var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--signal)}
+.fin-sum{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--ink);border-radius:var(--r);background:#FBF9F4;margin-bottom:18px}
+.fin-sum div{padding:14px 18px;border-right:1px solid var(--line)}
+.fin-sum div:last-child{border-right:0}
+.fin-sum span{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.fin-sum b{display:block;font:900 28px/1.1 var(--display);font-stretch:80%;margin-top:6px}
+.fin-sum small{color:var(--muted);font-size:12px}
+.plus{color:var(--ok)}.minus{color:var(--bad)}
+.fin-grid{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(300px,1fr);gap:18px;align-items:start}
+.panel{border:2px solid var(--ink);border-radius:var(--r);background:#FBF9F4;padding:16px 18px}
+.panel h3{font-size:22px;margin-bottom:12px}
+.panel + .panel{margin-top:18px}
+.kform{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kform .full{grid-column:1/-1}
+.kform .seg{width:100%}.kform .seg button{flex:1}
+.brk{list-style:none;margin:0;padding:0}
+.brk li{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.brk li .mono{text-align:right}
+.brk .barx{grid-column:1/-1;height:5px;background:var(--paper-2);border-radius:3px;overflow:hidden}
+.brk .barx i{display:block;height:100%;background:var(--ink)}
+.brk.out .barx i{background:var(--bad)}
+.chart{display:flex;align-items:flex-end;gap:4px;height:120px;padding-top:8px;border-bottom:1px solid var(--ink)}
+.chart .d{flex:1;display:flex;gap:2px;align-items:flex-end;height:100%;min-width:6px}
+.chart .d i{flex:1;background:var(--ok);min-height:1px}
+.chart .d i.k{background:var(--bad)}
+.chart-x{display:flex;justify-content:space-between;font:500 11px var(--mono);color:var(--muted);margin-top:4px}
+.chip.auto{background:var(--paper-2)}
+#tbKas td:first-child,#tbKas td.num{white-space:nowrap}
+.kform input[type=date]{background:#FBF9F4;border:1.5px solid var(--ink-2);border-radius:var(--r);padding:8px 12px;min-height:40px;width:100%;font:inherit}
+@media (max-width:1000px){.fin-grid{grid-template-columns:1fr}}
+@media (max-width:760px){.fin-sum{grid-template-columns:1fr 1fr}.fin-sum div:nth-child(2){border-right:0}.fin-sum div:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+@media print{header,.bar .tools,.no-print,.stats,#kasForm{display:none!important}body{background:#fff}main{padding:0}.panel,.fin-sum,.tbl-wrap{border-width:1px}}
+
+/* dialog + toast */
+dialog{border:2px solid var(--ink);border-radius:var(--r);padding:0;width:min(480px,calc(100% - 24px));background:var(--paper);color:var(--ink)}
+dialog::backdrop{background:rgba(22,20,15,.55)}
+.dh{padding:16px 20px;border-bottom:2px solid var(--ink);display:flex;justify-content:space-between;align-items:center}
+.dh h3{font-size:26px}
+.db{padding:18px 20px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.db .full{grid-column:1/-1}
+.df{padding:14px 20px 18px;display:flex;justify-content:flex-end;gap:10px;border-top:1px solid var(--line)}
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,150%);background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:var(--r);transition:transform .2s;z-index:99;max-width:calc(100% - 32px)}
+.toast.show{transform:translate(-50%,0)}
+.toast.bad{background:var(--bad)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<section id="login" hidden>
+  <form class="login-card" id="loginForm">
+    <span class="mono muted" style="font-size:12px;letter-spacing:.1em">FLYDAN BENGKEL MOTOR</span>
+    <h1>Admin stok</h1>
+    <label for="pw">Password</label>
+    <input id="pw" type="password" autocomplete="current-password" required>
+    <p class="err" id="loginErr"></p>
+    <button class="btn pri" style="width:100%" type="submit">Masuk</button>
+    <p class="muted" style="font-size:13px;margin:14px 0 0"><a href="/">← Kembali ke website</a></p>
+  </form>
+</section>
+
+<!-- APP -->
+<div id="app" hidden>
+  <header><div class="in">
+    <h1>Flydan Admin<small>STOK · PENJUALAN · KEUANGAN</small></h1>
+    <nav role="tablist" id="tabs">
+      <button role="tab" data-tab="stok" aria-selected="true">Stok barang</button>
+      <button role="tab" data-tab="booking" aria-selected="false">Booking servis<span class="badge" id="badgeBk" hidden>0</span></button>
+      <button role="tab" data-tab="kasir" aria-selected="false">Kasir / nota</button>
+      <button role="tab" data-tab="pesanan" aria-selected="false">Pesanan web<span class="badge" id="badgeNew" hidden>0</span></button>
+      <button role="tab" data-tab="riwayat" aria-selected="false">Riwayat stok</button>
+      <button role="tab" data-tab="jasa" aria-selected="false">Daftar jasa</button>
+      <button role="tab" data-tab="keuangan" aria-selected="false">Keuangan</button>
+    </nav>
+    <div class="right">
+      <a class="btn sm" href="/" target="_blank">Lihat website</a>
+      <button class="btn sm" id="btnPw" type="button">Ganti password</button>
+      <button class="btn sm" id="btnLogout" type="button">Log out</button>
+    </div>
+  </div></header>
+
+  <main>
+    <div class="stats">
+      <div class="stat"><span>Penjualan hari ini</span><b id="sOmzet">Rp0</b></div>
+      <div class="stat"><span>Transaksi hari ini</span><b id="sTrx">0</b></div>
+      <div class="stat"><span>Pesanan web baru</span><b id="sNew">0</b></div>
+      <div class="stat" id="sLowBox"><span>Stok menipis / habis</span><b id="sLow">0</b></div>
+    </div>
+
+    <!-- STOK -->
+    <section data-panel="stok">
+      <div class="bar">
+        <h2>Stok barang</h2>
+        <div class="tools">
+          <input type="search" id="qStok" placeholder="Cari nama / ukuran">
+          <select id="fCat"><option value="">Semua kategori</option><option value="ban">Ban luar</option><option value="bandalam">Ban dalam</option><option value="oli">Oli</option><option value="lain">Lainnya</option></select>
+          <button class="btn pri" id="btnAdd" type="button">+ Barang baru</button>
+        </div>
+      </div>
+      <div class="warnbox" id="modalWarn" hidden></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Barang</th><th>Ukuran</th><th>Kategori</th><th class="num">Modal</th><th class="num">Harga jual</th><th class="num">Stok</th><th>Ubah stok</th><th>Aksi</th></tr></thead>
+        <tbody id="tbStok"></tbody>
+      </table></div>
+      <p class="muted" style="font-size:13px">Isi jumlah lalu tekan <b>+ Masuk</b> (barang datang; bisa sekalian catat biaya belinya ke Keuangan) atau <b>− Keluar</b> (rusak/koreksi). Baris kuning = stok di bawah batas minimum, merah = habis.</p>
+    </section>
+
+    <!-- KASIR -->
+    <section data-panel="kasir" hidden>
+      <div class="bar"><h2>Kasir / nota</h2><div class="tools"><input type="search" id="qPos" placeholder="Cari barang…"></div></div>
+      <div class="pos">
+        <div>
+          <div class="jasa-box">
+            <div class="jasa-head"><h3>Jasa servis</h3>
+              <div class="seg" id="posJenis"><button type="button" data-j="matic" aria-pressed="true">Matic</button><button type="button" data-j="bebek" aria-pressed="false">Bebek</button><button type="button" data-j="sport" aria-pressed="false">Sport</button></div></div>
+            <div class="jasa-grid" id="jasaGrid"></div>
+            <div class="jasa-custom"><input type="text" id="jcNm" placeholder="Jasa lain, mis. las knalpot"><input type="number" id="jcHarga" min="0" step="1000" placeholder="Rp"><button class="btn sm dark" id="jcAdd" type="button">+ Jasa</button></div>
+          </div>
+          <h3 style="font-size:22px;margin:0 0 8px">Barang / part</h3>
+          <div class="pos-list" id="posList"></div>
+        </div>
+        <aside class="pos-cart">
+          <h3>Nota</h3>
+          <div class="bk-link" id="posBk" hidden></div>
+          <div id="posLines"><p class="muted">Klik jasa atau barang di kiri untuk menambah.</p></div>
+          <div class="ptotal"><span>Total</span><b id="posTotal">Rp0</b></div>
+          <div class="pos-laba" id="posLaba" hidden></div>
+          <label for="posName">Nama pembeli <span class="muted">(opsional)</span></label>
+          <input id="posName" type="text" placeholder="Pembeli langsung">
+          <label for="posNote" style="margin-top:10px">Catatan <span class="muted">(opsional)</span></label>
+          <input id="posNote" type="text" placeholder="mis. dipasang di Beat AB 1234 CD">
+          <label style="margin-top:10px">Dibayar dengan</label>
+          <div class="seg" id="posMetode" style="width:100%"><button type="button" data-m="tunai" aria-pressed="true" style="flex:1">Tunai</button><button type="button" data-m="transfer" aria-pressed="false" style="flex:1">Transfer</button><button type="button" data-m="qris" aria-pressed="false" style="flex:1">QRIS</button></div>
+          <button class="btn pri" style="width:100%;margin-top:14px" id="posSubmit" type="button" disabled>Simpan nota · bayar</button>
+        </aside>
+      </div>
+    </section>
+
+    <!-- BOOKING -->
+    <section data-panel="booking" hidden>
+      <div class="bar"><h2>Booking servis</h2>
+        <div class="tools"><select id="fBk"><option value="aktif">Belum selesai</option><option value="hari">Jadwal hari ini</option><option value="selesai">Selesai</option><option value="batal">Batal</option><option value="">Semua</option></select></div></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Kode</th><th>Jadwal</th><th>Pelanggan</th><th>Motor</th><th>Keluhan / layanan</th><th class="num">Estimasi</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody id="tbBk"></tbody>
+      </table></div>
+      <p class="muted" style="font-size:13px">Booking dari website masuk ke sini otomatis. Setelah motor selesai dikerjakan, tekan <b>Buat nota</b>: jasa dan part yang dipakai masuk ke kasir, stok part berkurang, dan uangnya tercatat di Keuangan sebagai <b>Jasa servis</b> dan <b>Penjualan barang</b>.</p>
+    </section>
+
+    <!-- PESANAN -->
+    <section data-panel="pesanan" hidden>
+      <div class="bar"><h2>Pesanan & nota</h2>
+        <div class="tools"><select id="fOrd"><option value="">Semua</option><option value="baru">Baru</option><option value="selesai">Selesai</option><option value="batal">Batal</option></select></div></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Kode</th><th>Waktu</th><th>Pembeli</th><th>Barang / jasa</th><th class="num">Total</th><th>Status</th><th></th></tr></thead>
+        <tbody id="tbOrd"></tbody>
+      </table></div>
+      <p class="muted" style="font-size:13px">Stok sudah berkurang saat pesanan masuk. Tekan <b>Selesai</b> saat barang diambil &amp; dibayar, uangnya otomatis masuk ke buku Keuangan. <b>Batalkan</b> kalau pembeli tidak jadi, stok dikembalikan otomatis.</p>
+    </section>
+
+    <!-- RIWAYAT -->
+    <section data-panel="riwayat" hidden>
+      <div class="bar"><h2>Riwayat stok</h2></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Waktu</th><th>Barang</th><th>Jenis</th><th class="num">Perubahan</th><th class="num">Sisa</th><th>Keterangan</th></tr></thead>
+        <tbody id="tbLog"></tbody>
+      </table></div>
+    </section>
+    <!-- DAFTAR JASA -->
+    <section data-panel="jasa" hidden>
+      <div class="bar"><h2>Daftar jasa servis</h2>
+        <div class="tools"><input type="search" id="qJasa" placeholder="Cari jasa"><button class="btn pri" id="btnJasaAdd" type="button">+ Jasa baru</button></div></div>
+      <div class="tbl-wrap"><table style="min-width:720px">
+        <thead><tr><th>Urutan</th><th>Nama jasa</th><th class="num">Matic (Rp)</th><th class="num">Bebek (Rp)</th><th class="num">Sport (Rp)</th><th>Aksi</th></tr></thead>
+        <tbody id="tbJasa"></tbody>
+      </table></div>
+      <div class="savebar" id="jasaSave" hidden><span id="jasaDirtyTxt">Ada perubahan harga yang belum disimpan.</span>
+        <span style="display:flex;gap:8px"><button class="btn sm" id="jasaReset" type="button" style="color:var(--paper);border-color:#5A5547">Batalkan</button><button class="btn sm pri" id="jasaSaveBtn" type="button">Simpan semua perubahan</button></span></div>
+      <p class="muted" style="font-size:13px">Ubah harga langsung di tabel, lalu tekan <b>Simpan semua perubahan</b>. Kosongkan kolom kalau jasa itu tidak berlaku untuk jenis motor tersebut (misalnya Servis CVT untuk bebek/sport). Harga baru langsung dipakai di <b>Kasir / nota</b>. Nota lama tidak ikut berubah.</p>
+    </section>
+
+    <!-- KEUANGAN -->
+    <section data-panel="keuangan" hidden>
+      <div class="bar">
+        <h2 id="finTitle">Pembukuan keuangan</h2>
+        <div class="tools fin-range">
+          <div class="seg" id="finPreset">
+            <button type="button" data-p="hari" aria-pressed="true">Hari ini</button>
+            <button type="button" data-p="minggu" aria-pressed="false">7 hari</button>
+            <button type="button" data-p="bulan" aria-pressed="false">Bulan ini</button>
+            <button type="button" data-p="bulanlalu" aria-pressed="false">Bulan lalu</button>
+          </div>
+          <input type="date" id="finDari" aria-label="Dari tanggal"> – <input type="date" id="finSampai" aria-label="Sampai tanggal">
+          <button class="btn sm" id="finCsv" type="button">Unduh Excel (CSV)</button>
+          <button class="btn sm" id="finPrint" type="button">Cetak</button>
+        </div>
+      </div>
+
+      <div class="fin-sum">
+        <div><span>Pemasukan</span><b class="plus" id="fMasuk">Rp0</b></div>
+        <div><span>Pengeluaran</span><b class="minus" id="fKeluar">Rp0</b></div>
+        <div><span>Laba bersih</span><b id="fLaba">Rp0</b><small id="fLabaNote"></small></div>
+        <div><span>Saldo kas akhir</span><b id="fSaldo">Rp0</b><small id="fSaldoAwal"></small></div>
+      </div>
+
+      <div class="fin-grid">
+        <div>
+          <div class="tbl-wrap"><table style="min-width:680px">
+            <thead><tr><th>Tanggal</th><th>Kategori</th><th>Keterangan</th><th>Metode</th><th class="num">Masuk</th><th class="num">Keluar</th><th class="no-print">Hapus</th></tr></thead>
+            <tbody id="tbKas"></tbody>
+          </table></div>
+          <p class="muted" style="font-size:13px">Penjualan dari kasir dan pesanan web yang ditandai <b>Selesai</b> tercatat otomatis. Jasa servis dan pengeluaran dicatat lewat formulir di samping.</p>
+          <div class="panel" style="margin-top:18px">
+            <h3>Untung per barang</h3>
+            <div class="tbl-wrap" style="border-width:1px"><table style="min-width:560px">
+              <thead><tr><th>Barang</th><th class="num">Terjual</th><th class="num">Penjualan</th><th class="num">Modal</th><th class="num">Untung</th><th class="num">Margin</th></tr></thead>
+              <tbody id="tbLabaBarang"></tbody>
+            </table></div>
+          </div>
+        </div>
+        <div>
+          <div class="panel" style="margin-bottom:18px"><h3>Laba rugi</h3>
+            <div class="warnbox" id="lrWarn" hidden></div>
+            <table class="lr" id="lrTable"></table>
+            <p style="font-size:13px;color:var(--ink-2);margin:10px 0 0">Laba bersih = untung barang (harga jual − modal) + jasa servis + pemasukan lain − biaya operasional. Pembelian stok <b>tidak</b> dihitung sebagai biaya karena sudah masuk ke modal barang yang terjual.</p>
+          </div>
+          <form class="panel" id="kasForm" novalidate>
+            <h3>Catat transaksi</h3>
+            <div class="kform">
+              <div class="full seg" id="kJenis"><button type="button" data-j="masuk" aria-pressed="true">+ Pemasukan</button><button type="button" data-j="keluar" aria-pressed="false">− Pengeluaran</button></div>
+              <div><label for="kTgl">Tanggal</label><input type="date" id="kTgl"></div>
+              <div><label for="kJml">Jumlah (Rp)</label><input type="number" id="kJml" min="1" step="500" inputmode="numeric" placeholder="mis. 65000"></div>
+              <div><label for="kKat">Kategori</label><select id="kKat"></select></div>
+              <div><label for="kMet">Metode</label><select id="kMet"><option value="tunai">Tunai</option><option value="transfer">Transfer</option><option value="qris">QRIS</option></select></div>
+              <div class="full"><label for="kKet">Keterangan</label><input type="text" id="kKet" placeholder="mis. Servis rutin Beat AB 1234 CD"></div>
+              <div class="full"><button class="btn pri" type="submit" style="width:100%">Simpan</button></div>
+            </div>
+          </form>
+          <div class="panel"><h3>Grafik harian</h3><div class="chart" id="fChart"></div><div class="chart-x" id="fChartX"></div>
+            <p class="muted" style="font-size:12px;margin:8px 0 0"><span class="plus">■</span> masuk &nbsp; <span class="minus">■</span> keluar</p></div>
+          <div class="panel"><h3>Pemasukan per kategori</h3><ul class="brk" id="fBrkIn"></ul></div>
+          <div class="panel"><h3>Pengeluaran per kategori</h3><ul class="brk out" id="fBrkOut"></ul></div>
+          <div class="panel"><h3>Pemasukan per metode</h3><ul class="brk" id="fBrkMet"></ul></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- dialog barang -->
+<dialog id="dlgProd">
+  <form id="prodForm" method="dialog">
+    <div class="dh"><h3 id="prodTitle">Barang baru</h3><button class="btn sm" value="cancel" formnovalidate>×</button></div>
+    <div class="db">
+      <div class="full"><label for="pNm">Nama barang</label><input id="pNm" type="text" required placeholder="mis. Ban luar tubeless matic"></div>
+      <div><label for="pUk">Ukuran / tipe</label><input id="pUk" type="text" placeholder="mis. 80/90-14"></div>
+      <div><label for="pCat">Kategori</label><select id="pCat"><option value="ban">Ban luar</option><option value="bandalam">Ban dalam</option><option value="oli">Oli</option><option value="lain">Lainnya</option></select></div>
+      <div><label for="pModal">Harga modal / beli (Rp)</label><input id="pModal" type="number" min="0" step="500" placeholder="harga dari supplier"></div>
+      <div><label for="pHarga">Harga jual (Rp)</label><input id="pHarga" type="number" min="0" step="500" placeholder="kosong = Tanya"></div>
+      <div class="full muted" id="pMargin" style="font-size:13px;min-height:18px"></div>
+      <div><label for="pMin">Batas stok minimum</label><input id="pMin" type="number" min="0" value="2"></div>
+      <div class="full" id="pStokWrap"><label for="pStok">Stok awal</label><input id="pStok" type="number" min="0" value="0"></div>
+    </div>
+    <div class="df"><button class="btn danger" type="button" id="pDel" hidden>Hapus barang</button><span style="flex:1"></span><button class="btn" value="cancel" formnovalidate>Batal</button><button class="btn pri" id="pSave" value="ok">Simpan</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlgPw">
+  <form id="pwForm" method="dialog">
+    <div class="dh"><h3>Ganti password</h3></div>
+    <div class="db"><div class="full"><label for="npw">Password baru (min. 4 karakter)</label><input id="npw" type="password" minlength="4" autocomplete="new-password" required></div></div>
+    <div class="df"><button class="btn" value="cancel" formnovalidate>Batal</button><button class="btn pri" value="ok">Simpan</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlgJasa">
+  <form id="jasaForm" method="dialog">
+    <div class="dh"><h3>Jasa baru</h3><button class="btn sm" value="cancel" formnovalidate>×</button></div>
+    <div class="db">
+      <div class="full"><label for="jNm">Nama jasa</label><input id="jNm" type="text" required placeholder="mis. Las knalpot"></div>
+      <div><label for="jM">Harga matic (Rp)</label><input id="jM" type="number" min="0" step="1000" placeholder="kosong = tidak ada"></div>
+      <div><label for="jB">Harga bebek (Rp)</label><input id="jB" type="number" min="0" step="1000" placeholder="kosong = tidak ada"></div>
+      <div><label for="jS">Harga sport (Rp)</label><input id="jS" type="number" min="0" step="1000" placeholder="kosong = tidak ada"></div>
+    </div>
+    <div class="df"><button class="btn" value="cancel" formnovalidate>Batal</button><button class="btn pri" value="ok">Simpan</button></div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const rp = n => "Rp" + (n || 0).toLocaleString("id-ID");
+const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const CAT = {ban: "Ban luar", bandalam: "Ban dalam", oli: "Oli", lain: "Lainnya"};
+const fmtT = t => new Date(t).toLocaleString("id-ID", {day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit"});
+let S = {products: [], orders: [], log: [], bookings: [], services: [], stats: {}};
+let tab = "stok", posCart = {}, posJasa = [], posJenis = "matic", posBooking = null;
+
+function toast(msg, bad = false) {
+  const t = $("#toast"); t.textContent = msg; t.classList.toggle("bad", bad); t.classList.add("show");
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2800);
+}
+async function api(path, method = "GET", body) {
+  const r = await fetch(path, {method, headers: body ? {"Content-Type": "application/json"} : {}, body: body ? JSON.stringify(body) : undefined, cache: "no-store"});
+  const d = await r.json().catch(() => ({}));
+  if (r.status === 401 && !path.endsWith("/login")) { showLogin(); throw new Error(d.error || "Silakan login."); }
+  if (!r.ok) throw new Error(d.error || "Gagal.");
+  return d;
+}
+function showLogin() { $("#app").hidden = true; $("#login").hidden = false; $("#pw").focus(); }
+
+async function refresh() {
+  S = await api("/api/admin/summary");
+  $("#login").hidden = true; $("#app").hidden = false;
+  render();
+}
+function render() {
+  const st = S.stats;
+  $("#sOmzet").textContent = rp(st.omzetHariIni); $("#sTrx").textContent = st.transaksiHariIni;
+  $("#sNew").textContent = st.pesananBaru; $("#sLow").textContent = st.stokMenipis;
+  $("#sLowBox").classList.toggle("warn", st.stokMenipis > 0);
+  $("#badgeNew").hidden = !st.pesananBaru; $("#badgeNew").textContent = st.pesananBaru;
+  $("#badgeBk").hidden = !st.bookingBaru; $("#badgeBk").textContent = st.bookingBaru;
+  renderStok(); renderPos(); renderOrders(); renderLog(); renderBookings(); if (!jasaDirty()) renderJasa();
+  if (tab === "keuangan") loadKas();
+}
+
+/* ---- stok ---- */
+function renderStok() {
+  const q = $("#qStok").value.trim().toLowerCase(), c = $("#fCat").value;
+  const list = S.products.filter(p => (!c || p.cat === c) && (!q || (p.nm + " " + p.ukuran).toLowerCase().includes(q)));
+  $("#tbStok").innerHTML = list.length ? list.map(p => `
+    <tr class="${p.stok <= 0 ? "out" : p.stok <= p.minStok ? "low" : ""}">
+      <td><b>${esc(p.nm)}</b></td>
+      <td class="mono">${esc(p.ukuran) || "—"}</td>
+      <td><span class="chip">${CAT[p.cat] || p.cat}</span></td>
+      <td class="num">${p.modal != null ? rp(p.modal) : `<span class="nomodal">belum diisi</span>`}</td>
+      <td class="num">${p.harga ? rp(p.harga) : "<span class=muted>Tanya</span>"}${marginTxt(p)}</td>
+      <td class="num"><div class="stokcell"><b>${p.stok}</b></div><small class="muted">min ${p.minStok}</small></td>
+      <td><div class="adj"><input type="number" min="1" value="1" aria-label="Jumlah" data-q="${p.id}">
+        <button class="btn sm" data-in="${p.id}" type="button">+ Masuk</button>
+        <button class="btn sm danger" data-out="${p.id}" type="button" ${p.stok <= 0 ? "disabled" : ""}>− Keluar</button></div></td>
+      <td><button class="btn sm" data-edit="${p.id}" type="button">Edit</button></td>
+    </tr>`).join("") : `<tr><td colspan="8" class="empty">Tidak ada barang.</td></tr>`;
+  const kosong = S.products.filter(p => p.modal == null).length;
+  $("#modalWarn").hidden = !kosong;
+  $("#modalWarn").innerHTML = `<b>${kosong} barang belum ada harga modalnya.</b> Laba barang itu belum bisa dihitung. Klik <b>Edit</b> lalu isi “Harga modal”, atau isi biaya beli saat <b>+ Masuk</b>.`;
+}
+function marginTxt(p) {
+  if (p.modal == null || !p.harga) return "";
+  const u = p.harga - p.modal, pct = p.harga ? Math.round(u / p.harga * 100) : 0;
+  return `<span class="margin ${u < 0 ? "neg" : "plus"}">untung ${u < 0 ? "−" : ""}${rp(Math.abs(u))} (${pct}%)</span>`;
+}
+$("#qStok").addEventListener("input", renderStok);
+$("#fCat").addEventListener("change", renderStok);
+$("#tbStok").addEventListener("click", async e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.edit) return openProd(S.products.find(p => p.id === b.dataset.edit));
+  const id = b.dataset.in || b.dataset.out; if (!id) return;
+  const n = parseInt($(`[data-q="${id}"]`).value, 10);
+  if (!(n > 0)) return toast("Isi jumlah dulu.", true);
+  const delta = b.dataset.in ? n : -n;
+  let ket = "", biaya = 0;
+  if (delta < 0) { ket = prompt("Alasan stok keluar? (mis. rusak, salah hitung)", "koreksi"); if (ket === null) return; }
+  else {
+    const pr = S.products.find(x => x.id === id);
+    const v = prompt(`Total biaya beli ${n} barang ini (Rp)?\n` + (pr?.modal != null ? `Modal sekarang ${rp(pr.modal)}/pcs → saran ${rp(pr.modal * n)}.\n` : "") +
+      `Dicatat sebagai pengeluaran & dipakai menghitung modal rata-rata.\nKosongkan kalau tidak ingin dicatat.`, pr?.modal != null ? String(pr.modal * n) : "");
+    if (v === null) return;
+    biaya = parseInt(String(v).replace(/\D/g, ""), 10) || 0;
+  }
+  try {
+    b.disabled = true;
+    const p = await api(`/api/admin/products/${id}/stock`, "POST", {delta, ket, biaya});
+    toast(`${p.nm} ${p.ukuran}: stok ${delta > 0 ? "+" : ""}${delta} → ${p.stok}` + (biaya ? ` · biaya ${rp(biaya)} dicatat` : ""));
+    await refresh();
+  } catch (err) { toast(err.message, true); b.disabled = false; }
+});
+
+/* ---- tambah / edit barang ---- */
+let editing = null;
+function openProd(p) {
+  editing = p || null;
+  $("#prodTitle").textContent = p ? "Edit barang" : "Barang baru";
+  $("#pNm").value = p?.nm || ""; $("#pUk").value = p?.ukuran || ""; $("#pCat").value = p?.cat || "ban";
+  $("#pHarga").value = p?.harga ?? ""; $("#pModal").value = p?.modal ?? ""; showMargin(); $("#pMin").value = p?.minStok ?? 2; $("#pStok").value = 0;
+  $("#pStokWrap").hidden = !!p; $("#pDel").hidden = !p;
+  $("#dlgProd").showModal(); $("#pNm").focus();
+}
+$("#btnAdd").addEventListener("click", () => openProd(null));
+function showMargin() {
+  const m = parseInt($("#pModal").value, 10), h = parseInt($("#pHarga").value, 10);
+  $("#pMargin").innerHTML = m >= 0 && h > 0 ? `Untung per barang: <b class="${h - m < 0 ? "minus" : "plus"}">${h - m < 0 ? "−" : ""}${rp(Math.abs(h - m))}</b> (${Math.round((h - m) / h * 100)}% dari harga jual)` : "";
+}
+["#pModal", "#pHarga"].forEach(x => $(x).addEventListener("input", showMargin));
+$("#dlgProd").addEventListener("close", async () => {
+  if ($("#dlgProd").returnValue !== "ok") return;
+  const body = {nm: $("#pNm").value, ukuran: $("#pUk").value, cat: $("#pCat").value, harga: $("#pHarga").value, modal: $("#pModal").value, minStok: $("#pMin").value};
+  try {
+    if (editing) await api(`/api/admin/products/${editing.id}`, "PUT", body);
+    else await api("/api/admin/products", "POST", {...body, stok: $("#pStok").value});
+    toast(editing ? "Barang diperbarui." : "Barang ditambahkan.");
+    await refresh();
+  } catch (err) { toast(err.message, true); }
+});
+$("#pDel").addEventListener("click", async () => {
+  if (!editing || !confirm(`Hapus "${editing.nm} ${editing.ukuran}" dari daftar? Riwayat tetap tersimpan.`)) return;
+  try { await api(`/api/admin/products/${editing.id}`, "DELETE"); $("#dlgProd").close(); toast("Barang dihapus."); await refresh(); }
+  catch (err) { toast(err.message, true); }
+});
+
+/* ---- kasir ---- */
+function renderPos() {
+  const q = $("#qPos").value.trim().toLowerCase();
+  const list = S.products.filter(p => !q || (p.nm + " " + p.ukuran).toLowerCase().includes(q));
+  $("#posList").innerHTML = list.map(p => {
+    const inC = posCart[p.id] || 0;
+    return `<div class="pos-item"><div><b>${esc(p.nm)}</b><small>${esc(p.ukuran)} · ${p.harga ? rp(p.harga) : "harga belum diisi"}</small></div>
+      <span class="mono ${p.stok <= 0 ? "" : "muted"}" style="${p.stok <= 0 ? "color:var(--bad)" : ""}">stok ${p.stok - inC}</span>
+      <button class="btn sm dark" data-pos="${p.id}" type="button" ${p.stok - inC <= 0 ? "disabled" : ""}>+ Tambah</button></div>`;
+  }).join("") || `<p class="empty">Tidak ada barang.</p>`;
+  // nota
+  for (const id of Object.keys(posCart)) { const p = S.products.find(x => x.id === id); if (!p) delete posCart[id]; else if (posCart[id] > p.stok) posCart[id] = p.stok; if (!posCart[id]) delete posCart[id]; }
+  const lines = Object.entries(posCart).map(([id, qty]) => ({p: S.products.find(x => x.id === id), qty}));
+  renderJasaGrid();
+  const jasaHtml = posJasa.map((j, i) => `
+    <div class="pline"><span><span class="tag-jasa">JASA</span>${esc(j.nm)}</span>
+      <label class="jp" style="margin:0">Rp<input class="jprice" type="number" min="0" step="1000" value="${j.harga}" data-jprice="${i}" aria-label="Harga jasa"></label>
+      <button class="btn sm danger" type="button" data-jdel="${i}" aria-label="Hapus jasa">× hapus</button></div>`).join("");
+  $("#posBk").hidden = !posBooking;
+  if (posBooking) $("#posBk").innerHTML = `<span>Nota untuk booking <b class="mono">${esc(posBooking.kode)}</b> · ${esc(posBooking.nama)} · ${esc(posBooking.motor)}</span><button class="btn sm" type="button" id="posBkX">Lepas</button>`;
+  $("#posLines").innerHTML = (lines.length || posJasa.length) ? jasaHtml + lines.map(({p, qty}) => `
+    <div class="pline"><span>${esc(p.nm)}<small class="muted" style="display:block">${esc(p.ukuran)}</small></span>
+      <span class="qty"><button type="button" data-pdec="${p.id}">−</button><span>${qty}</span><button type="button" data-pinc="${p.id}" ${qty >= p.stok ? "disabled" : ""}>+</button></span>
+      <span class="mono">${rp((p.harga || 0) * qty)}</span></div>`).join("") : `<p class="muted">Klik jasa atau barang di kiri untuk menambah.</p>`;
+  updatePosTotal();
+}
+function updatePosTotal() {
+  const barang = Object.entries(posCart).reduce((s, [id, q]) => s + ((S.products.find(x => x.id === id) || {}).harga || 0) * q, 0);
+  const jasa = posJasa.reduce((s, j) => s + (j.harga || 0), 0);
+  $("#posTotal").textContent = rp(barang + jasa);
+  let modal = 0, kurang = 0;
+  for (const [id, q] of Object.entries(posCart)) { const p = S.products.find(x => x.id === id); if (!p) continue; if (p.modal == null) kurang++; else modal += p.modal * q; }
+  const ada = Object.keys(posCart).length || posJasa.length;
+  $("#posLaba").hidden = !ada;
+  $("#posLaba").innerHTML = `<span>Perkiraan untung</span><span class="mono ${barang + jasa - modal < 0 ? "minus" : "plus"}">${rp(barang + jasa - modal)}${kurang ? ` <small class="nomodal">(${kurang} part tanpa modal)</small>` : ""}</span>`;
+  $("#posSubmit").disabled = !Object.keys(posCart).length && !posJasa.length;
+}
+const JI = {matic: 0, bebek: 1, sport: 2};
+function renderJasaGrid() {
+  $$("#posJenis button").forEach(b => b.setAttribute("aria-pressed", b.dataset.j === posJenis));
+  $("#jasaGrid").innerHTML = S.services.map(sv => {
+    const h = sv.harga[JI[posJenis]];
+    return `<button class="jbtn" type="button" data-jasa="${sv.id}" ${h == null ? "disabled" : ""}>${esc(sv.nm)}<small>${h == null ? "tidak berlaku" : rp(h)}</small></button>`;
+  }).join("");
+}
+function addJasa(nm, harga) { posJasa.push({nm, harga: Math.max(0, parseInt(harga, 10) || 0)}); renderPos(); }
+$("#posJenis").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; posJenis = b.dataset.j; renderJasaGrid(); });
+$("#jasaGrid").addEventListener("click", e => {
+  const b = e.target.closest("[data-jasa]"); if (!b) return;
+  const sv = S.services.find(x => x.id === b.dataset.jasa); const h = sv && sv.harga[JI[posJenis]];
+  if (h != null) addJasa(`${sv.nm} (${posJenis})`, h);
+});
+$("#jcAdd").addEventListener("click", () => {
+  const nm = $("#jcNm").value.trim(); if (!nm) { $("#jcNm").focus(); return toast("Isi nama jasanya.", true); }
+  addJasa(nm, $("#jcHarga").value); $("#jcNm").value = ""; $("#jcHarga").value = "";
+});
+$("#posLines").addEventListener("input", e => { const i = e.target.dataset.jprice; if (i == null) return; posJasa[i].harga = Math.max(0, parseInt(e.target.value, 10) || 0); updatePosTotal(); });
+$("#posLines").addEventListener("click", e => { const b = e.target.closest("[data-jdel]"); if (b) { posJasa.splice(+b.dataset.jdel, 1); renderPos(); } });
+$("#posBk").addEventListener("click", e => { if (e.target.id === "posBkX") { posBooking = null; renderPos(); } });
+function posAdd(id, d) {
+  const p = S.products.find(x => x.id === id); if (!p) return;
+  const q = Math.max(0, Math.min(p.stok, (posCart[id] || 0) + d));
+  if (q) posCart[id] = q; else delete posCart[id];
+  renderPos();
+}
+$("#qPos").addEventListener("input", renderPos);
+$("#posList").addEventListener("click", e => { const b = e.target.closest("[data-pos]"); if (b) posAdd(b.dataset.pos, 1); });
+$("#posLines").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; if (b.dataset.pinc) posAdd(b.dataset.pinc, 1); if (b.dataset.pdec) posAdd(b.dataset.pdec, -1); });
+let posMetode = "tunai";
+$("#posMetode").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; posMetode = b.dataset.m; $$("#posMetode button").forEach(x => x.setAttribute("aria-pressed", x === b)); });
+$("#posSubmit").addEventListener("click", async () => {
+  const items = Object.entries(posCart).map(([id, qty]) => ({id, qty}));
+  const btn = $("#posSubmit"); btn.disabled = true;
+  try {
+    const o = await api("/api/admin/sales", "POST", {items, jasa: posJasa, booking: posBooking?.kode || "", nama: $("#posName").value, catatan: $("#posNote").value, metode: posMetode});
+    posCart = {}; posJasa = []; posBooking = null; $("#posName").value = ""; $("#posNote").value = "";
+    toast(`Tersimpan ${o.kode} · ${rp(o.total)}. Tercatat di Keuangan${items.length ? ", stok part berkurang" : ""}.`);
+    await refresh();
+  } catch (err) { toast(err.message, true); btn.disabled = false; await refresh(); }
+});
+
+/* ---- daftar jasa ---- */
+const jasaEdits = {}; // id -> {nm, harga:[...]}
+const jasaDirty = () => Object.keys(jasaEdits).length > 0;
+function renderJasa() {
+  const q = $("#qJasa").value.trim().toLowerCase();
+  const list = S.services.map((sv, i) => ({sv, i})).filter(({sv}) => !q || sv.nm.toLowerCase().includes(q));
+  $("#tbJasa").innerHTML = list.length ? list.map(({sv, i}) => {
+    const e = jasaEdits[sv.id] || sv;
+    const cell = k => `<td class="num"><input type="number" min="0" step="1000" data-jid="${sv.id}" data-k="${k}" value="${e.harga[k] ?? ""}" placeholder="tidak ada" class="${jasaEdits[sv.id] && e.harga[k] !== sv.harga[k] ? "dirty" : ""}" aria-label="Harga ${["matic", "bebek", "sport"][k]}"></td>`;
+    return `<tr class="${jasaEdits[sv.id] ? "changed" : ""}">
+      <td><div class="ord"><button class="btn sm" data-up="${sv.id}" type="button" ${i === 0 || q ? "disabled" : ""} aria-label="Naik">↑</button><button class="btn sm" data-down="${sv.id}" type="button" ${i === S.services.length - 1 || q ? "disabled" : ""} aria-label="Turun">↓</button></div></td>
+      <td class="nm"><input type="text" data-jid="${sv.id}" data-k="nm" value="${esc(e.nm)}" class="${jasaEdits[sv.id] && e.nm !== sv.nm ? "dirty" : ""}" aria-label="Nama jasa"></td>
+      ${cell(0)}${cell(1)}${cell(2)}
+      <td><button class="btn sm danger" data-jdelete="${sv.id}" type="button">Hapus</button></td></tr>`;
+  }).join("") : `<tr><td colspan="6" class="empty">Belum ada jasa. Tekan “+ Jasa baru”.</td></tr>`;
+  const n = Object.keys(jasaEdits).length;
+  $("#jasaSave").hidden = !n; $("#jasaDirtyTxt").textContent = `${n} jasa diubah, belum disimpan.`;
+}
+$("#qJasa").addEventListener("input", renderJasa);
+$("#tbJasa").addEventListener("input", e => {
+  const el = e.target, id = el.dataset.jid; if (!id) return;
+  const sv = S.services.find(x => x.id === id);
+  const ed = jasaEdits[id] || {nm: sv.nm, harga: [...sv.harga]};
+  if (el.dataset.k === "nm") ed.nm = el.value;
+  else ed.harga[+el.dataset.k] = el.value === "" ? null : Math.max(0, parseInt(el.value, 10) || 0);
+  const same = ed.nm.trim() === sv.nm && ed.harga.every((h, k) => h === sv.harga[k]);
+  if (same) delete jasaEdits[id]; else jasaEdits[id] = ed;
+  el.closest("tr").classList.toggle("changed", !same);
+  el.classList.toggle("dirty", !same && (el.dataset.k === "nm" ? ed.nm !== sv.nm : ed.harga[+el.dataset.k] !== sv.harga[+el.dataset.k]));
+  const n = Object.keys(jasaEdits).length;
+  $("#jasaSave").hidden = !n; $("#jasaDirtyTxt").textContent = `${n} jasa diubah, belum disimpan.`;
+});
+$("#jasaReset").addEventListener("click", () => { for (const k in jasaEdits) delete jasaEdits[k]; renderJasa(); });
+$("#jasaSaveBtn").addEventListener("click", async () => {
+  const btn = $("#jasaSaveBtn"); btn.disabled = true;
+  const errs = [];
+  for (const [id, ed] of Object.entries(jasaEdits)) {
+    try { await api(`/api/admin/services/${id}`, "PUT", {nm: ed.nm, harga: ed.harga}); delete jasaEdits[id]; }
+    catch (err) { errs.push(err.message); }
+  }
+  btn.disabled = false;
+  await refresh(); renderJasa();
+  errs.length ? toast(errs[0], true) : toast("Harga jasa disimpan. Kasir langsung pakai harga baru.");
+});
+$("#tbJasa").addEventListener("click", async e => {
+  const b = e.target.closest("button"); if (!b) return;
+  try {
+    if (b.dataset.jdelete) {
+      const sv = S.services.find(x => x.id === b.dataset.jdelete);
+      if (!confirm(`Hapus jasa "${sv.nm}" dari daftar? Nota lama tidak berubah.`)) return;
+      await api(`/api/admin/services/${sv.id}`, "DELETE"); delete jasaEdits[sv.id]; toast("Jasa dihapus.");
+    } else if (b.dataset.up || b.dataset.down) {
+      await api(`/api/admin/services/${b.dataset.up || b.dataset.down}`, "POST", {arah: b.dataset.up ? -1 : 1});
+    } else return;
+    await refresh(); renderJasa();
+  } catch (err) { toast(err.message, true); }
+});
+$("#btnJasaAdd").addEventListener("click", () => { ["#jNm", "#jM", "#jB", "#jS"].forEach(s => $(s).value = ""); $("#dlgJasa").showModal(); $("#jNm").focus(); });
+$("#dlgJasa").addEventListener("close", async () => {
+  if ($("#dlgJasa").returnValue !== "ok") return;
+  const v = s => $(s).value === "" ? null : $(s).value;
+  try { await api("/api/admin/services", "POST", {nm: $("#jNm").value, harga: [v("#jM"), v("#jB"), v("#jS")]}); toast("Jasa ditambahkan."); await refresh(); renderJasa(); }
+  catch (err) { toast(err.message, true); $("#dlgJasa").showModal(); }
+});
+window.addEventListener("beforeunload", e => { if (jasaDirty()) { e.preventDefault(); e.returnValue = ""; } });
+
+/* ---- booking servis ---- */
+const fmtTgl = s => new Date(s + "T00:00").toLocaleDateString("id-ID", {weekday: "short", day: "2-digit", month: "short"});
+function renderBookings() {
+  const f = $("#fBk").value, today = ymd(new Date());
+  const list = S.bookings.filter(b => f === "" ? true : f === "aktif" ? (b.status === "baru" || b.status === "dikerjakan")
+    : f === "hari" ? (b.tgl === today && b.status !== "batal") : b.status === f)
+    .sort((a, b) => f === "aktif" || f === "hari" ? (a.tgl + a.jam).localeCompare(b.tgl + b.jam) : 0);
+  $("#tbBk").innerHTML = list.length ? list.map(b => {
+    const wa = b.hp ? "https://wa.me/" + b.hp.replace(/\D/g, "").replace(/^0/, "62") : "";
+    const telat = b.status === "baru" && b.tgl < today;
+    return `<tr>
+      <td class="mono">${esc(b.kode)}</td>
+      <td style="white-space:nowrap">${fmtTgl(b.tgl)}${b.tgl === today ? ` <b>(hari ini)</b>` : ""}${telat ? ` <small class="minus">lewat</small>` : ""}<br><small class="muted">${esc(b.jam)}</small></td>
+      <td>${esc(b.nama)}${b.hp ? `<br><a class="mono" href="${wa}" target="_blank" rel="noopener">${esc(b.hp)}</a>` : ""}</td>
+      <td>${esc(b.motor)}<br><small class="muted">${esc(b.jenis)}${b.plat ? " · " + esc(b.plat) : ""}</small></td>
+      <td>${b.keluhan ? esc(b.keluhan) : ""}${b.layanan.length ? `<br><small class="muted">${b.layanan.map(x => esc(x.nm)).join(", ")}</small>` : ""}${!b.keluhan && !b.layanan.length ? "<span class=muted>—</span>" : ""}</td>
+      <td class="num">${b.estimasi ? rp(b.estimasi) : "—"}</td>
+      <td><span class="chip ${b.status}">${b.status}</span>${b.nota ? `<br><small class="mono muted">${esc(b.nota)}</small>` : ""}</td>
+      <td style="white-space:nowrap">${b.status === "baru" ? `<button class="btn sm" data-bkwork="${b.kode}" type="button">Dikerjakan</button> ` : ""}${b.status === "baru" || b.status === "dikerjakan" ? `<button class="btn sm pri" data-bknota="${b.kode}" type="button">Buat nota</button> <button class="btn sm danger" data-bkcancel="${b.kode}" type="button">Batal</button>` : ""}</td>
+    </tr>`;
+  }).join("") : `<tr><td colspan="8" class="empty">Tidak ada booking.</td></tr>`;
+}
+$("#fBk").addEventListener("change", renderBookings);
+$("#tbBk").addEventListener("click", async e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.bknota) {
+    const bk = S.bookings.find(x => x.kode === b.dataset.bknota); if (!bk) return;
+    posBooking = bk; posCart = {}; posJenis = bk.jenis || "matic";
+    posJasa = bk.layanan.map(x => ({nm: x.nm, harga: x.harga}));
+    $("#posName").value = bk.nama; $("#posNote").value = [bk.motor, bk.plat].filter(Boolean).join(" ");
+    setTab("kasir"); renderPos();
+    return toast(posJasa.length ? "Layanan dari booking sudah masuk nota. Sesuaikan harga & tambah part yang dipakai." : "Tambahkan jasa & part yang dikerjakan, lalu simpan.");
+  }
+  const kode = b.dataset.bkwork || b.dataset.bkcancel; if (!kode) return;
+  if (b.dataset.bkcancel && !confirm(`Batalkan booking ${kode}?`)) return;
+  try { await api(`/api/admin/bookings/${kode}`, "POST", {status: b.dataset.bkwork ? "dikerjakan" : "batal"}); await refresh(); }
+  catch (err) { toast(err.message, true); }
+});
+
+/* ---- pesanan ---- */
+function notaLaba(o) {
+  if (o.status === "batal") return "";
+  let laba = (o.jasa || []).reduce((s, j) => s + j.harga, 0), kurang = 0;
+  for (const i of o.items) { if (i.modal == null) kurang++; else laba += ((i.harga || 0) - i.modal) * i.qty; }
+  if (kurang && kurang === o.items.length && !(o.jasa || []).length) return `<span class="margin muted">untung ?</span>`;
+  return `<span class="margin ${laba < 0 ? "neg" : "plus"}">untung ${rp(laba)}${kurang ? "*" : ""}</span>`;
+}
+function renderOrders() {
+  const f = $("#fOrd").value;
+  const list = S.orders.filter(o => !f || o.status === f);
+  $("#tbOrd").innerHTML = list.length ? list.map(o => {
+    const wa = o.hp ? "https://wa.me/" + o.hp.replace(/\D/g, "").replace(/^0/, "62") : "";
+    return `<tr>
+      <td class="mono">${esc(o.kode)}<br><small class="muted">${o.sumber === "web" ? "website" : o.kode.startsWith("SRV") ? "servis" : "di bengkel"}</small></td>
+      <td>${fmtT(o.t)}</td>
+      <td>${esc(o.nama)}${o.hp ? `<br><a class="mono" href="${wa}" target="_blank" rel="noopener">${esc(o.hp)}</a>` : ""}${o.ambil === "pasang" ? `<br><small>minta dipasang</small>` : ""}${o.catatan ? `<br><small class="muted">${esc(o.catatan)}</small>` : ""}</td>
+      <td>${[...(o.jasa || []).map(j => `<span class="tag-jasa">JASA</span>${esc(j.nm)} · ${rp(j.harga)}`), ...o.items.map(i => `${esc(i.nm)} ${esc(i.ukuran)} × ${i.qty}`)].join("<br>")}${o.booking ? `<br><small class="muted">booking ${esc(o.booking)}</small>` : ""}</td>
+      <td class="num">${rp(o.total)}${notaLaba(o)}</td>
+      <td><span class="chip ${o.status}">${o.status}</span></td>
+      <td style="white-space:nowrap">${o.status === "baru" ? `<button class="btn sm" data-done="${o.kode}" type="button">Selesai</button> ` : ""}${o.status !== "batal" ? `<button class="btn sm danger" data-cancel="${o.kode}" type="button">Batalkan</button>` : ""}</td>
+    </tr>`;
+  }).join("") : `<tr><td colspan="7" class="empty">Belum ada pesanan.</td></tr>`;
+}
+$("#fOrd").addEventListener("change", renderOrders);
+$("#tbOrd").addEventListener("click", async e => {
+  const b = e.target.closest("button"); if (!b) return;
+  const kode = b.dataset.done || b.dataset.cancel; if (!kode) return;
+  if (b.dataset.cancel && !confirm(`Batalkan ${kode}? Stok barangnya dikembalikan dan pemasukannya dihapus dari Keuangan.`)) return;
+  let metode = "tunai";
+  if (b.dataset.done) {
+    const v = prompt("Dibayar dengan apa? Ketik: tunai / transfer / qris", "tunai");
+    if (v === null) return;
+    metode = ["tunai", "transfer", "qris"].includes(v.trim().toLowerCase()) ? v.trim().toLowerCase() : "tunai";
+  }
+  try { await api(`/api/admin/orders/${kode}`, "POST", {status: b.dataset.done ? "selesai" : "batal", metode}); toast(b.dataset.done ? "Ditandai selesai." : "Dibatalkan, stok dikembalikan."); await refresh(); }
+  catch (err) { toast(err.message, true); }
+});
+
+/* ---- riwayat ---- */
+function renderLog() {
+  $("#tbLog").innerHTML = S.log.length ? S.log.map(l => `<tr>
+    <td>${fmtT(l.t)}</td><td>${esc(l.nm)}</td><td>${esc(l.jenis)}</td>
+    <td class="num delta ${l.delta > 0 ? "plus" : l.delta < 0 ? "min" : ""}">${l.delta > 0 ? "+" : ""}${l.delta}</td>
+    <td class="num">${l.sisa}</td><td class="muted">${esc(l.ket)}</td></tr>`).join("") : `<tr><td colspan="6" class="empty">Belum ada riwayat.</td></tr>`;
+}
+
+/* ---- keuangan ---- */
+const ymd = d => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+const fmtD = s => new Date(s + "T00:00").toLocaleDateString("id-ID", {day: "2-digit", month: "short", year: "numeric"});
+const MET = {tunai: "Tunai", transfer: "Transfer", qris: "QRIS"};
+let K = null, kJenis = "masuk", finPreset = "hari";
+function presetRange(p) {
+  const t = new Date(); t.setHours(0, 0, 0, 0);
+  if (p === "minggu") { const a = new Date(t); a.setDate(a.getDate() - 6); return [ymd(a), ymd(t)]; }
+  if (p === "bulan") return [ymd(new Date(t.getFullYear(), t.getMonth(), 1)), ymd(t)];
+  if (p === "bulanlalu") return [ymd(new Date(t.getFullYear(), t.getMonth() - 1, 1)), ymd(new Date(t.getFullYear(), t.getMonth(), 0))];
+  return [ymd(t), ymd(t)];
+}
+function setPreset(p) {
+  finPreset = p;
+  $$("#finPreset button").forEach(b => b.setAttribute("aria-pressed", b.dataset.p === p));
+  if (p) { const [a, z] = presetRange(p); $("#finDari").value = a; $("#finSampai").value = z; }
+}
+async function loadKas() {
+  let dari = $("#finDari").value, sampai = $("#finSampai").value;
+  if (dari && sampai && dari > sampai) [dari, sampai] = [sampai, dari];
+  try { K = await api(`/api/admin/kas?dari=${dari}&sampai=${sampai}`); renderKas(); } catch (err) { toast(err.message, true); }
+}
+function renderKas() {
+  const r = K.ringkas;
+  $("#finTitle").textContent = "Pembukuan · " + (K.dari === K.sampai ? fmtD(K.dari) : `${fmtD(K.dari)} – ${fmtD(K.sampai)}`);
+  $("#fMasuk").textContent = rp(r.masuk); $("#fKeluar").textContent = rp(r.keluar);
+  const L = K.labaRugi;
+  $("#fLaba").textContent = (L.labaBersih < 0 ? "−" : "") + rp(Math.abs(L.labaBersih)); $("#fLaba").className = L.labaBersih < 0 ? "minus" : "plus";
+  $("#fLabaNote").textContent = "setelah modal barang";
+  const row = (a, b, cls = "") => `<tr class="${cls}"><td>${a}</td><td>${b}</td></tr>`;
+  const neg = n => (n < 0 ? "−" : "") + rp(Math.abs(n));
+  $("#lrTable").innerHTML =
+    row("Penjualan barang", rp(L.penjualanBarang)) +
+    (L.penjualanBarang !== L.omzetBerModal ? row(`yang modalnya diketahui`, rp(L.omzetBerModal), "sub") +
+      row(`<span class="nomodal">belum dihitung (tanpa modal)</span>`, `<span class="nomodal">${rp(L.penjualanBarang - L.omzetBerModal)}</span>`, "sub") : "") +
+    row("− Modal barang terjual", "−" + rp(L.modalBarang), "sub") +
+    row("<b>Untung barang</b>", `<b>${neg(L.labaBarang)}</b>`) +
+    row("+ Jasa servis", rp(L.jasa), "sub") +
+    (L.lain ? row("+ Pemasukan lain", rp(L.lain), "sub") : "") +
+    row("<b>Laba kotor</b>", `<b>${neg(L.labaKotor)}</b>`) +
+    row("− Biaya operasional", "−" + rp(L.biayaOps), "sub") +
+    row("Laba bersih", `<span class="${L.labaBersih < 0 ? "minus" : "plus"}">${neg(L.labaBersih)}</span>`, "tot big") +
+    `<tr><td colspan="2" style="border:0;padding:18px 0 4px;font:500 11px/1 var(--mono);letter-spacing:.1em;color:var(--muted)">INFO STOK (BUKAN BAGIAN LABA)</td></tr>` +
+    row("Belanja stok periode ini", rp(L.pembelianStok)) +
+    row("Nilai stok di gudang (harga modal)", rp(L.nilaiStok));
+  const w = [];
+  if (L.tanpaModal) w.push(`${L.tanpaModal} barang terjual belum punya harga modal, jadi untungnya belum dihitung.`);
+  if (L.manualBarang) w.push(`Penjualan barang ${rp(L.manualBarang)} dicatat manual (tanpa nota), modalnya tidak diketahui.`);
+  if (L.produkTanpaModal) w.push(`${L.produkTanpaModal} barang di stok belum diisi harga modalnya.`);
+  $("#lrWarn").hidden = !w.length; $("#lrWarn").innerHTML = w.join("<br>");
+  $("#tbLabaBarang").innerHTML = K.perBarang.length ? K.perBarang.map(g => `<tr>
+    <td>${esc(g.nm)}</td><td class="num">${g.qty}</td><td class="num">${rp(g.omzet)}</td>
+    <td class="num">${g.tanpaModal === g.qty ? `<span class="nomodal">belum diisi</span>` : rp(g.modal) + (g.tanpaModal ? "*" : "")}</td>
+    <td class="num ${g.laba < 0 ? "minus" : "plus"}">${g.tanpaModal === g.qty ? "—" : neg(g.laba)}</td>
+    <td class="num">${g.tanpaModal === g.qty || !g.omzet ? "—" : Math.round(g.laba / (g.omzet - (g.omzet / g.qty) * g.tanpaModal) * 100) + "%"}</td></tr>`).join("")
+    : `<tr><td colspan="6" class="empty">Belum ada barang terjual di periode ini.</td></tr>`;
+  $("#fSaldo").textContent = (r.saldoAkhir < 0 ? "−" : "") + rp(Math.abs(r.saldoAkhir));
+  $("#fSaldoAwal").textContent = `saldo awal periode ${r.saldoAwal < 0 ? "−" : ""}${rp(Math.abs(r.saldoAwal))}`;
+  $("#tbKas").innerHTML = K.rows.length ? K.rows.map(k => `<tr>
+    <td>${fmtD(k.tgl)}</td>
+    <td><span class="chip ${k.auto ? "auto" : ""}">${esc(k.kategori)}</span></td>
+    <td>${esc(k.ket) || "<span class=muted>—</span>"}${k.auto ? ` <small class="muted">· otomatis</small>` : ""}</td>
+    <td>${MET[k.metode] || k.metode}</td>
+    <td class="num plus">${k.jenis === "masuk" ? rp(k.jumlah) : ""}</td>
+    <td class="num minus">${k.jenis === "keluar" ? rp(k.jumlah) : ""}</td>
+    <td class="no-print">${k.auto && /^(WEB|TOKO|SRV)-/.test(k.ref || "") ? "" : `<button class="btn sm danger" data-kdel="${k.id}" type="button" title="Hapus">×</button>`}</td>
+  </tr>`).join("") : `<tr><td colspan="7" class="empty">Belum ada transaksi di periode ini.</td></tr>`;
+  const brk = (list) => { const max = Math.max(1, ...list.map(x => x.jumlah)); return list.length ? list.map(x => `<li><span>${esc(MET[x.nama] || x.nama)}</span><span class="mono">${rp(x.jumlah)}</span><span class="barx"><i style="width:${(x.jumlah / max * 100).toFixed(1)}%"></i></span></li>`).join("") : `<li class="muted">—</li>`; };
+  $("#fBrkIn").innerHTML = brk(K.perKategoriMasuk); $("#fBrkOut").innerHTML = brk(K.perKategoriKeluar); $("#fBrkMet").innerHTML = brk(K.perMetode);
+  // grafik: setiap hari dalam rentang (maks 62)
+  const days = []; for (let d = new Date(K.dari + "T00:00"); ymd(d) <= K.sampai && days.length < 62; d.setDate(d.getDate() + 1)) days.push(ymd(d));
+  const map = Object.fromEntries(K.harian.map(h => [h.tgl, h]));
+  const max = Math.max(1, ...K.harian.map(h => Math.max(h.masuk, h.keluar)));
+  $("#fChart").innerHTML = days.map(t => { const h = map[t] || {masuk: 0, keluar: 0}; return `<div class="d" title="${fmtD(t)}: masuk ${rp(h.masuk)}, keluar ${rp(h.keluar)}"><i style="height:${h.masuk / max * 100}%"></i><i class="k" style="height:${h.keluar / max * 100}%"></i></div>`; }).join("");
+  $("#fChartX").innerHTML = days.length ? `<span>${fmtD(days[0]).slice(0, 6)}</span><span>${fmtD(days[days.length - 1]).slice(0, 6)}</span>` : "";
+}
+function fillKat() {
+  const list = K?.kategori?.[kJenis] || (kJenis === "masuk" ? ["Jasa servis", "Penjualan barang", "Pemasukan lain"] : ["Pembelian stok", "Gaji / upah", "Listrik & air", "Sewa tempat", "Alat & perlengkapan", "Transport", "Pengeluaran lain"]);
+  $("#kKat").innerHTML = list.map(k => `<option>${k}</option>`).join("");
+  $("#kKet").placeholder = kJenis === "masuk" ? "mis. Servis rutin Beat AB 1234 CD" : "mis. Bayar listrik Oktober";
+}
+$("#finPreset").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; setPreset(b.dataset.p); loadKas(); });
+["#finDari", "#finSampai"].forEach(s => $(s).addEventListener("change", () => { setPreset(null); loadKas(); }));
+$("#kJenis").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; kJenis = b.dataset.j; $$("#kJenis button").forEach(x => x.setAttribute("aria-pressed", x === b)); fillKat(); });
+$("#kasForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const jumlah = parseInt($("#kJml").value, 10);
+  if (!(jumlah > 0)) { $("#kJml").focus(); return toast("Isi jumlah uang.", true); }
+  try {
+    await api("/api/admin/kas", "POST", {jenis: kJenis, tgl: $("#kTgl").value, jumlah, kategori: $("#kKat").value, metode: $("#kMet").value, ket: $("#kKet").value});
+    toast(`${kJenis === "masuk" ? "Pemasukan" : "Pengeluaran"} ${rp(jumlah)} dicatat.`);
+    $("#kJml").value = ""; $("#kKet").value = "";
+    await loadKas();
+  } catch (err) { toast(err.message, true); }
+});
+$("#tbKas").addEventListener("click", async e => {
+  const b = e.target.closest("[data-kdel]"); if (!b) return;
+  if (!confirm("Hapus catatan ini dari pembukuan?")) return;
+  try { await api(`/api/admin/kas/${b.dataset.kdel}`, "DELETE"); toast("Catatan dihapus."); await loadKas(); } catch (err) { toast(err.message, true); }
+});
+$("#finCsv").addEventListener("click", () => {
+  if (!K) return;
+  const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+  const rows = [["Tanggal", "Jenis", "Kategori", "Keterangan", "Metode", "Masuk", "Keluar"],
+    ...[...K.rows].reverse().map(k => [k.tgl, k.jenis, k.kategori, k.ket, MET[k.metode] || k.metode, k.jenis === "masuk" ? k.jumlah : "", k.jenis === "keluar" ? k.jumlah : ""]),
+    [], ["", "", "", "TOTAL", "", K.ringkas.masuk, K.ringkas.keluar],
+    [], ["", "", "", "LABA RUGI"], ["", "", "", "Penjualan barang", "", K.labaRugi.penjualanBarang], ["", "", "", "Modal barang terjual", "", -K.labaRugi.modalBarang],
+    ["", "", "", "Untung barang", "", K.labaRugi.labaBarang], ["", "", "", "Jasa servis", "", K.labaRugi.jasa], ["", "", "", "Pemasukan lain", "", K.labaRugi.lain],
+    ["", "", "", "Biaya operasional", "", -K.labaRugi.biayaOps], ["", "", "", "LABA BERSIH", "", K.labaRugi.labaBersih],
+    [], ["", "", "", "UNTUNG PER BARANG"], ["", "", "", "Barang", "Terjual", "Penjualan", "Modal", "Untung"],
+    ...K.perBarang.map(g => ["", "", "", g.nm, g.qty, g.omzet, g.tanpaModal === g.qty ? "" : g.modal, g.tanpaModal === g.qty ? "" : g.laba])];
+  const csv = "\ufeff" + rows.map(r => r.map(q).join(";")).join("\r\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], {type: "text/csv;charset=utf-8"}));
+  a.download = `pembukuan-flydan_${K.dari}_${K.sampai}.csv`; a.click(); URL.revokeObjectURL(a.href);
+});
+$("#finPrint").addEventListener("click", () => window.print());
+$("#kTgl").value = ymd(new Date()); $("#kTgl").max = ymd(new Date());
+setPreset("hari"); fillKat();
+
+/* ---- tab, login, logout ---- */
+function setTab(t) {
+  tab = t;
+  $$("#tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === t));
+  $$("[data-panel]").forEach(p => p.hidden = p.dataset.panel !== t);
+  location.hash = t;
+  if (t === "keuangan" && !$("#app").hidden) loadKas();
+}
+$("#tabs").addEventListener("click", e => { const b = e.target.closest("button[data-tab]"); if (b) setTab(b.dataset.tab); });
+$("#loginForm").addEventListener("submit", async e => {
+  e.preventDefault(); $("#loginErr").textContent = "";
+  try { await api("/api/admin/login", "POST", {password: $("#pw").value}); $("#pw").value = ""; await refresh(); }
+  catch (err) { $("#loginErr").textContent = err.message; }
+});
+$("#btnLogout").addEventListener("click", async () => { await api("/api/admin/logout", "POST").catch(() => {}); showLogin(); });
+$("#btnPw").addEventListener("click", () => { $("#npw").value = ""; $("#dlgPw").showModal(); });
+$("#dlgPw").addEventListener("close", async () => {
+  if ($("#dlgPw").returnValue !== "ok") return;
+  try { await api("/api/admin/password", "POST", {password: $("#npw").value}); toast("Password diganti."); } catch (err) { toast(err.message, true); }
+});
+
+setTab(["stok", "booking", "kasir", "pesanan", "riwayat", "jasa", "keuangan"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "stok");
+refresh().catch(() => showLogin());
+// cek pesanan baru tiap 15 detik
+setInterval(() => { if (!$("#app").hidden && !document.querySelector("dialog[open]") && document.activeElement?.tagName !== "INPUT" && document.visibilityState === "visible") refresh().catch(() => {}); }, 15000);
+</script>
+</body>
+</html>

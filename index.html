@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flaydannn Bengkel — Servis, Tune Up & Spare Part</title>
+  <meta name="description"
+    content="Bengkel sepeda motor: servis rutin, ganti oli, tune up, kelistrikan, ban dan rem. Booking via WhatsApp.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500;62..125,800;62..125,900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ===== GANTI DATA BENGKEL DI BAGIAN <script> PALING BAWAH (CONFIG) ===== */
+    :root {
+      --paper: #F3F0E8;
+      --paper-2: #E8E3D6;
+      --ink: #16140F;
+      --ink-2: #3A362D;
+      --muted: #6E685B;
+      --line: #CFC8B6;
+      --signal: #F2B705;
+      --signal-ink: #1A1400;
+      --ok: #2F7D3A;
+      --bad: #B2361F;
+      --r: 4px;
+      --wrap: 1180px;
+      --display: "Archivo", "Arial Narrow", sans-serif;
+      --body: "IBM Plex Sans", system-ui, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, monospace;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      html {
+        scroll-behavior: auto
+      }
+
+      * {
+        transition: none !important;
+        animation: none !important
+      }
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 400 17px/1.55 var(--body);
+      -webkit-font-smoothing: antialiased
+    }
+
+    a {
+      color: inherit
+    }
+
+    img {
+      max-width: 100%
+    }
+
+    .wrap {
+      max-width: var(--wrap);
+      margin: 0 auto;
+      padding: 0 24px
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: var(--display);
+      margin: 0;
+      line-height: .95;
+      letter-spacing: -.01em;
+      text-wrap: balance
+    }
+
+    p {
+      text-wrap: pretty
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--signal);
+      outline-offset: 2px
+    }
+
+    /* ---------- buttons ---------- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 22px;
+      border-radius: var(--r);
+      font: 600 16px/1 var(--body);
+      text-decoration: none;
+      border: 2px solid var(--ink);
+      cursor: pointer;
+      transition: transform .12s, background .12s
+    }
+
+    .btn:active {
+      transform: translateY(1px)
+    }
+
+    .btn-primary {
+      background: var(--signal);
+      color: var(--signal-ink);
+      border-color: var(--signal)
+    }
+
+    .btn-primary:hover {
+      background: #FFC814
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink)
+    }
+
+    .btn-ghost:hover {
+      background: var(--ink);
+      color: var(--paper)
+    }
+
+    .btn svg {
+      width: 20px;
+      height: 20px;
+      flex: none
+    }
+
+    /* ---------- top bar ---------- */
+    .topbar {
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 14px
+    }
+
+    .topbar .wrap {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 40px;
+      flex-wrap: wrap
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--muted)
+    }
+
+    .status.open .dot {
+      background: #4CC35E;
+      box-shadow: 0 0 0 3px rgba(76, 195, 94, .25)
+    }
+
+    .status.closed .dot {
+      background: #E2543A
+    }
+
+    .topbar a {
+      text-decoration: none;
+      opacity: .85
+    }
+
+    .topbar a:hover {
+      opacity: 1
+    }
+
+    header.nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: var(--paper);
+      border-bottom: 2px solid var(--ink)
+    }
+
+    header.nav .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 68px;
+      gap: 20px
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      background: var(--ink);
+      color: var(--signal);
+      display: grid;
+      place-items: center;
+      border-radius: var(--r)
+    }
+
+    .brand-mark svg {
+      width: 26px;
+      height: 26px
+    }
+
+    .brand-name {
+      font: 900 22px/1 var(--display);
+      font-stretch: 85%;
+      text-transform: uppercase;
+      letter-spacing: .01em
+    }
+
+    .brand-name small {
+      display: block;
+      font: 500 11px/1.2 var(--mono);
+      letter-spacing: .08em;
+      color: var(--muted);
+      margin-top: 3px
+    }
+
+    nav.links {
+      display: flex;
+      gap: 28px;
+      font-weight: 500;
+      font-size: 15px
+    }
+
+    nav.links a {
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 2px solid transparent
+    }
+
+    nav.links a:hover {
+      border-color: var(--signal)
+    }
+
+    @media (max-width:860px) {
+      nav.links {
+        display: none
+      }
+
+      .nav .btn {
+        padding: 0 14px
+      }
+    }
+
+    /* ---------- hero ---------- */
+    .hero {
+      padding: 64px 0 0;
+      border-bottom: 2px solid var(--ink);
+      overflow: hidden
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr .9fr;
+      gap: 56px;
+      align-items: end
+    }
+
+    .eyebrow {
+      font: 500 13px/1 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 22px;
+      display: flex;
+      gap: 10px;
+      align-items: center
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 2px;
+      background: var(--ink)
+    }
+
+    .hero h1 {
+      font-size: clamp(52px, 8.6vw, 128px);
+      font-weight: 900;
+      font-stretch: 72%;
+      text-transform: uppercase
+    }
+
+    .hero h1 .hl {
+      background: var(--signal);
+      padding: 0 .08em;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone
+    }
+
+    .hero-lede {
+      font-size: 19px;
+      max-width: 34ch;
+      color: var(--ink-2);
+      margin: 28px 0 32px
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 56px
+    }
+
+    .ticket {
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: var(--r) var(--r) 0 0;
+      padding: 28px 28px 32px;
+      position: relative
+    }
+
+    .ticket::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -1px;
+      height: 10px;
+      background: radial-gradient(circle at 10px -2px, var(--paper) 7px, transparent 8px) 0 0/20px 10px repeat-x
+    }
+
+    .ticket h3 {
+      font-size: 15px;
+      font: 500 13px/1 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--signal);
+      margin: 6px 0 18px
+    }
+
+    .hours {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px
+    }
+
+    .hours td {
+      padding: 9px 0;
+      border-bottom: 1px dashed #4A453A
+    }
+
+    .hours td:last-child {
+      text-align: right;
+      font-family: var(--mono)
+    }
+
+    .hours tr.today td {
+      color: var(--signal);
+      font-weight: 600
+    }
+
+    .ticket .addr {
+      margin: 20px 0 0;
+      font-size: 15px;
+      color: #CFC8B6
+    }
+
+    .ticket .addr strong {
+      color: var(--paper);
+      display: block;
+      font-weight: 600;
+      margin-bottom: 2px
+    }
+
+    @media (max-width:900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 8px
+      }
+
+      .hero-cta {
+        margin-bottom: 36px
+      }
+    }
+
+    /* ---------- strip ---------- */
+    .strip {
+      background: var(--signal);
+      border-bottom: 2px solid var(--ink);
+      overflow: hidden;
+      white-space: nowrap
+    }
+
+    .strip-track {
+      display: inline-flex;
+      gap: 40px;
+      padding: 14px 0;
+      font: 800 20px/1 var(--display);
+      font-stretch: 80%;
+      text-transform: uppercase;
+      animation: slide 40s linear infinite
+    }
+
+    .strip-track span {
+      display: inline-flex;
+      align-items: center;
+      gap: 40px
+    }
+
+    .strip-track span::after {
+      content: "✕";
+      font-size: 14px
+    }
+
+    @keyframes slide {
+      to {
+        transform: translateX(-50%)
+      }
+    }
+
+    /* ---------- section ---------- */
+    section {
+      padding: 96px 0
+    }
+
+    .sec-head {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: end;
+      margin-bottom: 48px
+    }
+
+    .sec-head h2 {
+      font-size: clamp(40px, 5.4vw, 72px);
+      font-weight: 900;
+      font-stretch: 75%;
+      text-transform: uppercase
+    }
+
+    .sec-head p {
+      color: var(--ink-2);
+      max-width: 46ch;
+      margin: 0;
+      justify-self: end
+    }
+
+    .num {
+      font: 500 13px/1 var(--mono);
+      color: var(--muted);
+      letter-spacing: .1em;
+      display: block;
+      margin-bottom: 14px
+    }
+
+    @media (max-width:800px) {
+      .sec-head {
+        grid-template-columns: 1fr;
+        gap: 16px
+      }
+
+      .sec-head p {
+        justify-self: start
+      }
+
+      section {
+        padding: 72px 0
+      }
+    }
+
+    /* ---------- services list ---------- */
+    .svc {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border-top: 2px solid var(--ink)
+    }
+
+    .svc-item {
+      padding: 28px 28px 30px 0;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 4px 18px
+    }
+
+    .svc-item:nth-child(odd) {
+      border-right: 1px solid var(--line)
+    }
+
+    .svc-item:nth-child(even) {
+      padding-left: 28px
+    }
+
+    .svc-item .idx {
+      font: 500 14px/1.6 var(--mono);
+      color: var(--muted);
+      grid-row: span 2
+    }
+
+    .svc-item h3 {
+      font-size: 30px;
+      font-weight: 800;
+      font-stretch: 80%;
+      text-transform: uppercase
+    }
+
+    .svc-item p {
+      margin: 8px 0 0;
+      color: var(--ink-2);
+      font-size: 16px
+    }
+
+    .svc-item.feature {
+      grid-column: 1/-1;
+      background: var(--ink);
+      color: var(--paper);
+      padding: 36px;
+      border: 0;
+      grid-template-columns: 56px 1fr auto;
+      align-items: center
+    }
+
+    .svc-item.feature .idx {
+      color: var(--signal)
+    }
+
+    .svc-item.feature h3 {
+      font-size: clamp(34px, 4vw, 48px)
+    }
+
+    .svc-item.feature p {
+      color: #CFC8B6;
+      max-width: 60ch
+    }
+
+    @media (max-width:760px) {
+      .svc {
+        grid-template-columns: 1fr
+      }
+
+      .svc-item,
+      .svc-item:nth-child(even) {
+        padding: 24px 0;
+        border-right: 0
+      }
+
+      .svc-item.feature {
+        grid-template-columns: 40px 1fr;
+        padding: 28px 20px
+      }
+
+      .svc-item.feature .btn {
+        grid-column: 1/-1;
+        margin-top: 16px;
+        justify-self: start
+      }
+    }
+
+    /* ---------- price / estimator ---------- */
+    #harga {
+      background: var(--paper-2);
+      border-top: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink)
+    }
+
+    .est {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 32px;
+      align-items: start
+    }
+
+    .seg {
+      display: inline-flex;
+      border: 2px solid var(--ink);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 24px;
+      flex-wrap: wrap
+    }
+
+    .seg button {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      font: 600 15px/1 var(--body);
+      padding: 0 20px;
+      min-height: 44px;
+      cursor: pointer;
+      color: var(--ink)
+    }
+
+    .seg button+button {
+      border-left: 2px solid var(--ink)
+    }
+
+    .seg button[aria-pressed="true"] {
+      background: var(--ink);
+      color: var(--signal)
+    }
+
+    .price-group {
+      margin-bottom: 28px
+    }
+
+    .price-group h4 {
+      font: 500 13px/1 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 6px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--ink)
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      min-height: 48px
+    }
+
+    .row:hover {
+      background: rgba(242, 183, 5, .12)
+    }
+
+    .row input {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--ink);
+      margin: 0;
+      cursor: pointer
+    }
+
+    .row .nm {
+      font-weight: 500
+    }
+
+    .row .nm small {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 400
+    }
+
+    .row .pr {
+      font: 500 15px/1 var(--mono);
+      white-space: nowrap
+    }
+
+    .summary {
+      position: sticky;
+      top: 96px;
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      border-radius: var(--r);
+      padding: 26px
+    }
+
+    .summary h3 {
+      font-size: 30px;
+      font-weight: 800;
+      font-stretch: 80%;
+      text-transform: uppercase;
+      margin-bottom: 16px
+    }
+
+    .sum-list {
+      list-style: none;
+      margin: 0 0 16px;
+      padding: 0;
+      font-size: 15px;
+      min-height: 60px
+    }
+
+    .sum-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--line)
+    }
+
+    .sum-list li span:last-child {
+      font-family: var(--mono);
+      white-space: nowrap
+    }
+
+    .sum-list .empty {
+      color: var(--muted);
+      border: 0
+    }
+
+    .total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-top: 2px solid var(--ink);
+      padding-top: 14px;
+      margin-bottom: 6px
+    }
+
+    .total b {
+      font: 900 36px/1 var(--display);
+      font-stretch: 80%
+    }
+
+    .fine {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 18px
+    }
+
+    .summary .btn {
+      width: 100%;
+      justify-content: center
+    }
+
+    @media (max-width:900px) {
+      .est {
+        grid-template-columns: 1fr
+      }
+
+      .summary {
+        position: static
+      }
+    }
+
+    /* ---------- produk ---------- */
+    .ptabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 28px
+    }
+
+    .ptabs button {
+      appearance: none;
+      border: 2px solid var(--ink);
+      background: transparent;
+      color: var(--ink);
+      font: 600 15px/1 var(--body);
+      padding: 0 18px;
+      min-height: 44px;
+      border-radius: 999px;
+      cursor: pointer
+    }
+
+    .ptabs button[aria-pressed="true"] {
+      background: var(--ink);
+      color: var(--signal)
+    }
+
+    .pgrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 0;
+      border-top: 2px solid var(--ink);
+      border-left: 1px solid var(--line)
+    }
+
+    .pcard {
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 200px
+    }
+
+    .pcard .cat {
+      font: 500 12px/1 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted)
+    }
+
+    .pcard h3 {
+      font-size: 26px;
+      font-weight: 800;
+      font-stretch: 80%;
+      text-transform: uppercase;
+      line-height: 1
+    }
+
+    .pcard .spec {
+      font-size: 14px;
+      color: var(--ink-2);
+      margin: 0
+    }
+
+    .pcard .sizes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 6px 0 0;
+      padding: 0;
+      list-style: none
+    }
+
+    .pcard .sizes li {
+      font: 500 12px/1 var(--mono);
+      border: 1px solid var(--ink-2);
+      border-radius: 3px;
+      padding: 5px 7px
+    }
+
+    .pcard .foot {
+      margin-top: auto;
+      padding-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px
+    }
+
+    .pcard .harga {
+      font: 500 15px/1.2 var(--mono)
+    }
+
+    .pcard .harga small {
+      display: block;
+      font: 400 12px/1.2 var(--body);
+      color: var(--muted)
+    }
+
+    .pcard a.ask {
+      font: 600 14px/1 var(--body);
+      text-decoration: none;
+      border-bottom: 2px solid var(--signal);
+      padding: 4px 0;
+      white-space: nowrap
+    }
+
+    .pcard a.ask:hover {
+      background: var(--signal)
+    }
+
+    .pnote {
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--muted)
+    }
+
+
+    /* ---------- stok & keranjang ---------- */
+    .ptools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:28px}
+    .ptools .ptabs{margin:0}
+    .psearch{min-height:44px;border:2px solid var(--ink);border-radius:999px;padding:0 18px;font:400 15px var(--body);background:var(--paper);color:var(--ink);width:min(280px,100%)}
+    .psearch:focus{outline:none;box-shadow:0 0 0 3px var(--signal)}
+    .pcard .uk{font:500 17px/1 var(--mono);background:var(--paper-2);border:1.5px solid var(--ink);border-radius:3px;padding:6px 9px;align-self:flex-start;margin-top:4px}
+    body.has-cart{padding-bottom:96px}
+    .pcard .foot{flex-wrap:wrap}
+    .stok{display:inline-flex;align-items:center;gap:6px;font:600 13px/1 var(--body);margin-top:8px}
+    .stok::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok)}
+    .stok.low{color:#8A5A00}.stok.low::before{background:var(--signal)}
+    .stok.out{color:var(--bad)}.stok.out::before{background:var(--bad)}
+    .pcard.is-out{opacity:.6}
+    .addbtn{appearance:none;border:2px solid var(--ink);background:var(--ink);color:var(--signal);font:600 14px/1 var(--body);min-height:40px;padding:0 14px;border-radius:var(--r);cursor:pointer;white-space:nowrap}
+    .addbtn:hover{background:#000}
+    .addbtn:disabled{background:transparent;color:var(--muted);border-color:var(--line);cursor:not-allowed}
+    .addbtn.in{background:var(--signal);color:var(--signal-ink);border-color:var(--signal)}
+    .pstate{grid-column:1/-1;padding:40px 22px;color:var(--ink-2);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .pstate code{font-family:var(--mono);background:var(--paper-2);padding:2px 6px;border-radius:3px}
+
+    .cartbar{position:fixed;left:50%;bottom:18px;border:2px solid var(--signal);transform:translate(-50%,140%);z-index:40;display:flex;align-items:center;gap:18px;
+      background:var(--ink);color:var(--paper);border-radius:var(--r);padding:10px 10px 10px 20px;box-shadow:0 10px 30px rgba(0,0,0,.3);transition:transform .2s;max-width:calc(100% - 32px)}
+    .cartbar.show{transform:translate(-50%,0)}
+    .cartbar b{font:900 22px/1 var(--display);font-stretch:80%}
+    .cartbar small{display:block;color:#CFC8B6;font-size:13px}
+    @media (max-width:760px){.cartbar{left:16px;right:88px;transform:translateY(140%);justify-content:space-between}.cartbar.show{transform:none}}
+
+    dialog.co{border:2px solid var(--ink);border-radius:var(--r);padding:0;width:min(560px,calc(100% - 24px));background:var(--paper);color:var(--ink);max-height:calc(100vh - 32px)}
+    dialog.co::backdrop{background:rgba(22,20,15,.55)}
+    .co-head{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:2px solid var(--ink)}
+    .co-head h3{font-size:30px;font-weight:800;font-stretch:80%;text-transform:uppercase}
+    .xbtn{appearance:none;border:0;background:transparent;font:500 28px/1 var(--mono);cursor:pointer;width:44px;height:44px;color:var(--ink)}
+    .co-body{padding:20px 24px;overflow:auto}
+    .cline{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line)}
+    .cline .nm small{display:block;color:var(--muted);font-size:13px}
+    .qty{display:inline-flex;border:1.5px solid var(--ink);border-radius:var(--r)}
+    .qty button{appearance:none;border:0;background:transparent;width:34px;height:34px;font:600 18px/1 var(--body);cursor:pointer;color:var(--ink)}
+    .qty button:disabled{color:var(--line);cursor:not-allowed}
+    .qty span{min-width:30px;display:grid;place-items:center;font:500 15px var(--mono)}
+    .cline .pr{font:500 14px var(--mono);min-width:90px;text-align:right}
+    .co-total{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0 18px}
+    .co-total b{font:900 32px/1 var(--display);font-stretch:80%}
+    .co .fgrid{margin-top:4px}
+    .radio-row{display:flex;gap:10px;flex-wrap:wrap}
+    .radio-row label{display:flex;gap:8px;align-items:center;border:1.5px solid var(--ink-2);border-radius:var(--r);padding:0 14px;min-height:44px;font-weight:500;cursor:pointer}
+    .radio-row input{accent-color:var(--ink)}
+    .co-foot{padding:16px 24px 22px;border-top:1px solid var(--line);display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap}
+    .alert{border:2px solid var(--bad);color:var(--bad);border-radius:var(--r);padding:10px 14px;font-size:14px;margin-bottom:12px;display:none}
+    .alert.show{display:block}
+    .done{text-align:center;padding:12px 0}
+    .done .kode{font:500 22px/1 var(--mono);background:var(--signal);display:inline-block;padding:8px 14px;border-radius:var(--r);margin:10px 0 14px}
+
+    /* ---------- booking ---------- */
+    .book {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 56px
+    }
+
+    .book-side ol {
+      list-style: none;
+      counter-reset: s;
+      padding: 0;
+      margin: 28px 0 0
+    }
+
+    .book-side li {
+      counter-increment: s;
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 14px;
+      padding: 16px 0;
+      border-top: 1px solid var(--line)
+    }
+
+    .book-side li::before {
+      content: counter(s, decimal-leading-zero);
+      font: 500 14px/1.6 var(--mono);
+      color: var(--muted)
+    }
+
+    .book-side li b {
+      display: block
+    }
+
+    form.card {
+      border: 2px solid var(--ink);
+      border-radius: var(--r);
+      padding: 28px;
+      background: #FBF9F4
+    }
+
+    .fgrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .field.full {
+      grid-column: 1/-1
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 600
+    }
+
+    label .opt {
+      font-weight: 400;
+      color: var(--muted)
+    }
+
+    input[type=text],
+    input[type=tel],
+    input[type=date],
+    select,
+    textarea {
+      font: 400 16px/1.3 var(--body);
+      color: var(--ink);
+      background: var(--paper);
+      border: 1.5px solid var(--ink-2);
+      border-radius: var(--r);
+      padding: 12px 14px;
+      min-height: 48px;
+      width: 100%
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--ink);
+      box-shadow: 0 0 0 3px var(--signal)
+    }
+
+    .field.err input,
+    .field.err select {
+      border-color: var(--bad)
+    }
+
+    .errmsg {
+      font-size: 13px;
+      color: var(--bad);
+      display: none
+    }
+
+    .field.err .errmsg {
+      display: block
+    }
+
+    .form-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 22px;
+      flex-wrap: wrap
+    }
+
+    .form-foot p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+      max-width: 34ch
+    }
+
+    @media (max-width:900px) {
+      .book {
+        grid-template-columns: 1fr;
+        gap: 32px
+      }
+    }
+
+    @media (max-width:560px) {
+      .fgrid {
+        grid-template-columns: 1fr
+      }
+
+      form.card {
+        padding: 20px
+      }
+    }
+
+    /* ---------- faq ---------- */
+    .faq {
+      border-top: 2px solid var(--ink)
+    }
+
+    .faq details {
+      border-bottom: 1px solid var(--line)
+    }
+
+    .faq summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 22px 40px 22px 0;
+      font-weight: 600;
+      font-size: 18px;
+      position: relative
+    }
+
+    .faq summary::-webkit-details-marker {
+      display: none
+    }
+
+    .faq summary::after {
+      content: "+";
+      position: absolute;
+      right: 4px;
+      top: 16px;
+      font: 500 26px/1 var(--mono)
+    }
+
+    .faq details[open] summary::after {
+      content: "–"
+    }
+
+    .faq details p {
+      margin: 0 0 22px;
+      color: var(--ink-2);
+      max-width: 70ch
+    }
+
+    /* ---------- location ---------- */
+    #lokasi {
+      background: var(--ink);
+      color: var(--paper)
+    }
+
+    #lokasi .sec-head p {
+      color: #CFC8B6
+    }
+
+    .loc {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 40px
+    }
+
+    .loc dl {
+      margin: 0;
+      display: grid;
+      gap: 22px
+    }
+
+    .loc dt {
+      font: 500 12px/1 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--signal);
+      margin-bottom: 6px
+    }
+
+    .loc dd {
+      margin: 0;
+      font-size: 18px
+    }
+
+    .map {
+      border: 2px solid var(--paper);
+      border-radius: var(--r);
+      min-height: 340px;
+      overflow: hidden;
+      background: #24211B
+    }
+
+    .map iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 340px;
+      border: 0;
+      filter: grayscale(1) contrast(1.05)
+    }
+
+    #lokasi .btn-ghost {
+      color: var(--paper);
+      border-color: var(--paper)
+    }
+
+    #lokasi .btn-ghost:hover {
+      background: var(--paper);
+      color: var(--ink)
+    }
+
+    @media (max-width:860px) {
+      .loc {
+        grid-template-columns: 1fr
+      }
+    }
+
+    footer {
+      background: var(--ink);
+      color: #8F897B;
+      border-top: 1px solid #3A362D;
+      font-size: 14px
+    }
+
+    footer .wrap {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding-top: 22px;
+      padding-bottom: 22px;
+      flex-wrap: wrap
+    }
+
+    /* floating WA (mobile) */
+    .fab {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 30;
+      display: none;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #25D366;
+      color: #fff;
+      place-items: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .25)
+    }
+
+    .fab svg {
+      width: 30px;
+      height: 30px
+    }
+
+    @media (max-width:760px) {
+      .fab {
+        display: grid
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <div class="wrap">
+      <span class="status" id="status"><span class="dot"></span><span id="statusText">Memeriksa jam buka…</span></span>
+      <span><a href="#" data-tel id="topTel">—</a> &nbsp;·&nbsp; <a href="#lokasi" id="topAddr">—</a></span>
+    </div>
+  </div>
+
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="#">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L3 17.8V21h3.2l6.3-6.3a4 4 0 0 0 5.2-5.4l-2.6 2.6-2.4-.6-.6-2.4z" />
+          </svg>
+        </span>
+        <span class="brand-name" data-name>Bengkel<small data-tagline>SERVIS · SPARE PART</small></span>
+      </a>
+      <nav class="links" aria-label="Utama">
+        <a href="#layanan">Layanan</a>
+        <a href="#harga">Harga</a>
+        <a href="#produk">Ban & Oli</a>
+        <a href="#booking">Booking</a>
+        <a href="#faq">FAQ</a>
+        <a href="#lokasi">Lokasi</a>
+      </nav>
+      <a class="btn btn-primary" href="#booking">Booking Servis</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="h1">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Bengkel motor · Sambungmacan, Sragen</div>
+          <h1 id="h1">Motor rewel?<br><span class="hl">Beres</span> hari ini.</h1>
+          <p class="hero-lede">Servis rutin, ganti oli, tune up, sampai turun mesin. Sedia juga ban luar, ban dalam, dan
+            oli. Harga dijelaskan di depan, part lama dikembalikan ke Anda.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#booking">Booking lewat WhatsApp
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg></a>
+            <a class="btn btn-ghost" href="#harga">Hitung estimasi biaya</a>
+          </div>
+        </div>
+        <aside class="ticket" aria-label="Jam buka dan alamat">
+          <h3>Jam Buka</h3>
+          <table class="hours" id="hours"></table>
+          <p class="addr"><strong data-name-plain>—</strong><span data-address>—</span></p>
+        </aside>
+      </div>
+    </section>
+
+    <div class="strip" aria-hidden="true">
+      <div class="strip-track">
+        <span>Ganti oli</span><span>Tune up</span><span>Servis CVT</span><span>Injeksi &
+          karburator</span><span>Kelistrikan</span><span>Rem & kampas</span><span>Ban &
+          pentil</span><span>Aki</span><span>Turun mesin</span><span>Jual ban & oli</span>
+        <span>Ganti oli</span><span>Tune up</span><span>Servis CVT</span><span>Injeksi &
+          karburator</span><span>Kelistrikan</span><span>Rem & kampas</span><span>Ban &
+          pentil</span><span>Aki</span><span>Turun mesin</span><span>Jual ban & oli</span>
+      </div>
+    </div>
+
+    <!-- LAYANAN -->
+    <section id="layanan" aria-labelledby="h-layanan">
+      <div class="wrap">
+        <div class="sec-head">
+          <div><span class="num">01 / LAYANAN</span>
+            <h2 id="h-layanan">Yang kami kerjakan</h2>
+          </div>
+          <p>Matic, bebek, maupun sport. Sebelum dikerjakan, mekanik cek dulu dan kasih tahu apa yang perlu diganti
+            beserta harganya.</p>
+        </div>
+        <div class="svc">
+          <div class="svc-item feature">
+            <span class="idx">A</span>
+            <div>
+              <h3>Servis Rutin Lengkap</h3>
+              <p>Ganti oli, bersihkan filter udara, setel rem & rantai, cek busi, aki, dan lampu. Paket paling sering
+                diambil, kira-kira 45–60 menit.</p>
+            </div>
+            <a class="btn btn-primary" href="#harga" data-preset="servis">Lihat harga</a>
+          </div>
+          <div class="svc-item"><span class="idx">B</span>
+            <h3>Mesin & Tune Up</h3>
+            <p>Bersihkan injeksi atau karburator, setel klep, ganti busi, sampai turun mesin / overhaul.</p>
+          </div>
+          <div class="svc-item"><span class="idx">C</span>
+            <h3>CVT & Transmisi</h3>
+            <p>Servis CVT matic, ganti v-belt, roller, kampas ganda. Untuk bebek dan sport: rantai, gir, kopling.</p>
+          </div>
+          <div class="svc-item"><span class="idx">D</span>
+            <h3>Kelistrikan</h3>
+            <p>Aki tekor, lampu mati, starter tidak jalan, kiprok, sampai jalur kabel bermasalah.</p>
+          </div>
+          <div class="svc-item"><span class="idx">E</span>
+            <h3>Rem, Ban & Kaki-kaki</h3>
+            <p>Kampas rem, minyak rem, tambal / ganti ban, shock, bearing roda, dan komstir.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HARGA + ESTIMATOR -->
+    <section id="harga" aria-labelledby="h-harga">
+      <div class="wrap">
+        <div class="sec-head">
+          <div><span class="num">02 / HARGA</span>
+            <h2 id="h-harga">Hitung dulu, baru datang</h2>
+          </div>
+          <p>Pilih jenis motor dan centang pekerjaan yang dibutuhkan. Angkanya masih perkiraan, harga pasti dikonfirmasi
+            mekanik setelah motor dicek.</p>
+        </div>
+        <div class="est">
+          <div>
+            <div class="seg" role="group" aria-label="Jenis motor" id="seg">
+              <button type="button" data-type="matic" aria-pressed="true">Matic</button>
+              <button type="button" data-type="bebek" aria-pressed="false">Bebek</button>
+              <button type="button" data-type="sport" aria-pressed="false">Sport</button>
+            </div>
+            <div id="priceList"></div>
+          </div>
+          <aside class="summary" aria-live="polite">
+            <h3>Estimasi</h3>
+            <ul class="sum-list" id="sumList">
+              <li class="empty">Belum ada pekerjaan dipilih.</li>
+            </ul>
+            <div class="total"><span>Total perkiraan</span><b id="sumTotal">Rp0</b></div>
+            <p class="fine">Termasuk jasa & part standar. Part original/racing dan kerusakan tambahan dihitung terpisah.
+            </p>
+            <a class="btn btn-primary" href="#booking" id="toBooking">Booking dengan pilihan ini</a>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUK -->
+    <section id="produk" aria-labelledby="h-produk">
+      <div class="wrap">
+        <div class="sec-head">
+          <div><span class="num">03 / JUAL BAN & OLI</span>
+            <h2 id="h-produk">Ban, ban dalam &amp; oli</h2>
+          </div>
+          <p>Lihat stok yang tersedia sekarang, masukkan ke keranjang, lalu pesan. Barang kami siapkan, Anda tinggal ambil atau sekalian dipasang.</p>
+        </div>
+        <div class="ptools">
+          <div class="ptabs" role="group" aria-label="Kategori produk" id="ptabs">
+            <button type="button" data-cat="semua" aria-pressed="true">Semua</button>
+            <button type="button" data-cat="ban" aria-pressed="false">Ban luar</button>
+            <button type="button" data-cat="bandalam" aria-pressed="false">Ban dalam</button>
+            <button type="button" data-cat="oli" aria-pressed="false">Oli</button>
+          </div>
+          <input class="psearch" id="psearch" type="search" placeholder="Cari ukuran, mis. 80/90-14" aria-label="Cari produk">
+        </div>
+        <div class="pgrid" id="pgrid"><div class="pstate">Memuat stok…</div></div>
+        <p class="pnote">Stok diperbarui langsung dari bengkel. Pesan di sini, bayar saat ambil di bengkel. Pemasangan ban beli di sini gratis.</p>
+      </div>
+    </section>
+
+    <!-- BOOKING -->
+    <section id="booking" aria-labelledby="h-booking">
+      <div class="wrap book">
+        <div class="book-side">
+          <span class="num">04 / BOOKING</span>
+          <h2 id="h-booking"
+            style="font-size:clamp(40px,5.4vw,72px);font-weight:900;font-stretch:75%;text-transform:uppercase">Antre
+            dari rumah</h2>
+          <ol>
+            <li>
+              <div><b>Isi formulir</b>Data motor dan keluhannya, cukup singkat.</div>
+            </li>
+            <li>
+              <div><b>Kirim ke WhatsApp</b>Pesan sudah tersusun otomatis, tinggal tekan kirim.</div>
+            </li>
+            <li>
+              <div><b>Kami konfirmasi jamnya</b>Datang sesuai jadwal, motor langsung dikerjakan.</div>
+            </li>
+          </ol>
+        </div>
+        <form class="card" id="bookForm" novalidate>
+          <div class="fgrid">
+            <div class="field"><label for="fName">Nama</label><input id="fName" type="text" autocomplete="name"
+                required><span class="errmsg">Nama wajib diisi.</span></div>
+            <div class="field"><label for="fPhone">No. WhatsApp <span class="opt">(opsional)</span></label><input
+                id="fPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="08…"></div>
+            <div class="field"><label for="fMotor">Motor</label><input id="fMotor" type="text"
+                placeholder="mis. Honda Beat 2019" required><span class="errmsg">Isi merek & tipe motor.</span></div>
+            <div class="field"><label for="fPlate">Plat nomor <span class="opt">(opsional)</span></label><input
+                id="fPlate" type="text" placeholder="AB 1234 CD" style="text-transform:uppercase"></div>
+            <div class="field"><label for="fDate">Tanggal datang</label><input id="fDate" type="date" required><span
+                class="errmsg" id="dateErr">Pilih tanggal.</span></div>
+            <div class="field"><label for="fTime">Perkiraan jam</label>
+              <select id="fTime">
+                <option>Pagi (08–11)</option>
+                <option>Siang (11–14)</option>
+                <option>Sore (14–17)</option>
+              </select>
+            </div>
+            <div class="field full"><label for="fNote">Keluhan / pekerjaan</label><textarea id="fNote"
+                placeholder="mis. Servis rutin + rem belakang bunyi"></textarea></div>
+          </div>
+          <div class="form-foot">
+            <p>Booking tercatat di bengkel, lalu WhatsApp terbuka dengan pesan yang sudah terisi.</p>
+            <button class="btn btn-primary" type="submit">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.3-.5 0-1 .3-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z" />
+              </svg>
+              Kirim via WhatsApp</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" aria-labelledby="h-faq" style="padding-top:0">
+      <div class="wrap">
+        <div class="sec-head">
+          <div><span class="num">05 / FAQ</span>
+            <h2 id="h-faq">Sering ditanya</h2>
+          </div>
+          <p></p>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>Harus booking dulu, atau bisa langsung datang?</summary>
+            <p>Bisa langsung datang. Booking cuma supaya Anda tidak perlu menunggu lama, terutama di akhir pekan.</p>
+          </details>
+          <details>
+            <summary>Berapa lama servis rutin?</summary>
+            <p>Biasanya 45–60 menit per motor kalau tidak ada kerusakan tambahan. Turun mesin bisa 1–3 hari, tergantung
+              ketersediaan part.</p>
+          </details>
+          <details>
+            <summary>Apakah part lama dikembalikan?</summary>
+            <p>Ya. Part yang diganti kami tunjukkan dan berikan ke Anda, supaya jelas apa saja yang dikerjakan.</p>
+          </details>
+          <details>
+            <summary>Pakai part original atau aftermarket?</summary>
+            <p>Terserah Anda. Mekanik akan menawarkan dua pilihan beserta harganya sebelum dipasang.</p>
+          </details>
+          <details>
+            <summary>Bisa bayar non-tunai?</summary>
+            <p data-payment>—</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOKASI -->
+    <section id="lokasi" aria-labelledby="h-lokasi">
+      <div class="wrap">
+        <div class="sec-head">
+          <div><span class="num" style="color:#8F897B">06 / LOKASI</span>
+            <h2 id="h-lokasi">Mampir ke bengkel</h2>
+          </div>
+          <p>Parkir motor tersedia di depan bengkel. Sambil menunggu, ada ruang tunggu dan kopi.</p>
+        </div>
+        <div class="loc">
+          <dl>
+            <div>
+              <dt>Alamat</dt>
+              <dd data-address>—</dd>
+            </div>
+            <div>
+              <dt>Telepon / WhatsApp</dt>
+              <dd><a href="#" data-tel>—</a></dd>
+            </div>
+            <div>
+              <dt>Jam buka</dt>
+              <dd id="hoursShort">—</dd>
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+              <a class="btn btn-primary" id="mapsBtn" href="#" target="_blank" rel="noopener">Buka di Google Maps</a>
+              <a class="btn btn-ghost" id="waBtn" href="#" target="_blank" rel="noopener">Chat WhatsApp</a>
+            </div>
+          </dl>
+          <div class="map"><iframe id="mapFrame" title="Peta lokasi bengkel" loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap"><span>© <span id="yr"></span> <span data-name-plain>—</span></span><span>Servis · Tune up · Ban ·
+        Oli</span></div>
+  </footer>
+
+  <div class="cartbar" id="cartbar" aria-live="polite">
+    <div><b id="cartCount">0 barang</b><small id="cartTotal">Rp0</small></div>
+    <button class="btn btn-primary" type="button" id="openCart">Lihat keranjang</button>
+  </div>
+
+  <dialog class="co" id="coDialog" aria-labelledby="coTitle">
+    <div class="co-head"><h3 id="coTitle">Keranjang</h3><button class="xbtn" type="button" data-close aria-label="Tutup">×</button></div>
+    <form id="coForm" novalidate>
+      <div class="co-body" id="coBody">
+        <div class="alert" id="coAlert" role="alert"></div>
+        <div id="coLines"></div>
+        <div class="co-total"><span>Total</span><b id="coTotal">Rp0</b></div>
+        <div class="fgrid">
+          <div class="field"><label for="cName">Nama</label><input id="cName" type="text" autocomplete="name" required><span class="errmsg">Nama wajib diisi.</span></div>
+          <div class="field"><label for="cPhone">No. WhatsApp</label><input id="cPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="08…" required><span class="errmsg">Isi nomor WhatsApp yang aktif.</span></div>
+          <div class="field full"><label>Diambil bagaimana?</label>
+            <div class="radio-row"><label><input type="radio" name="ambil" value="ambil" checked> Ambil saja</label><label><input type="radio" name="ambil" value="pasang"> Sekalian dipasang</label></div></div>
+          <div class="field full"><label for="cNote">Catatan <span class="opt">(opsional)</span></label><input id="cNote" type="text" placeholder="mis. motor Beat, datang sore"></div>
+        </div>
+      </div>
+      <div class="co-foot"><button class="btn btn-ghost" type="button" data-close>Lanjut belanja</button><button class="btn btn-primary" type="submit" id="coSubmit">Pesan sekarang</button></div>
+    </form>
+    <div class="co-body done" id="coDone" hidden>
+      <p style="margin:0">Pesanan tercatat dan stok sudah kami sisihkan untuk Anda.</p>
+      <div class="kode" id="doneKode">—</div>
+      <p style="margin:0 0 18px;color:var(--ink-2)">Kirim kode ini ke WhatsApp bengkel supaya barang disiapkan. Bayar saat ambil.</p>
+      <a class="btn btn-primary" id="doneWa" target="_blank" rel="noopener" href="#">Kirim ke WhatsApp</a>
+    </div>
+  </dialog>
+
+  <a class="fab" id="fab" href="#" target="_blank" rel="noopener" aria-label="Chat WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path
+        d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.3-.5 0-1 .3-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z" />
+    </svg>
+  </a>
+
+  <script>
+    /* =====================================================================
+       CONFIG — GANTI SEMUA DATA DI SINI (nama, alamat, WA, jam, harga)
+       ===================================================================== */
+    const CONFIG = {
+      name: "Flydan Bengkel Motor",
+      tagline: "SERVIS · BAN · OLI",
+      address: "Dayu Kidul RT14/RW04, Dusun Kebayan 2, Banyurip, Kec. Sambungmacan, Kab. Sragen, Jawa Tengah 57253",
+      phoneDisplay: "0881-0366-90416",
+      whatsapp: "62881036690416",                 // format internasional tanpa + / 0 depan
+      mapsQuery: "Dayu Kidul, Banyurip, Sambungmacan, Sragen, Jawa Tengah 57253",
+      payment: "Bisa. Kami terima tunai, transfer bank, dan QRIS.",
+      // PRODUK & STOK: tidak lagi diatur di sini — kelola lewat halaman admin (/admin.html)
+      // jam buka: index 0 = Minggu … 6 = Sabtu. null = tutup. Format "HH:MM"
+      hours: [
+        null,
+        ["08:00", "17:00"], ["08:00", "17:00"], ["08:00", "17:00"],
+        ["08:00", "17:00"], ["08:00", "17:00"], ["08:00", "15:00"]
+      ],
+      // harga CONTOH (Rp) per jenis motor: [matic, bebek, sport]
+      prices: [
+        {
+          group: "Servis rutin", items: [
+            {id: "servis", nm: "Servis rutin lengkap", note: "cek & setel menyeluruh", p: [65000, 60000, 85000]},
+            {id: "oli", nm: "Ganti oli mesin", note: "oli standar 0.8–1L", p: [55000, 50000, 75000]},
+            {id: "oligardan", nm: "Ganti oli gardan", note: "khusus matic", p: [20000, null, null]},
+            {id: "filter", nm: "Ganti filter udara", p: [45000, 40000, 70000]},
+          ]
+        },
+        {
+          group: "Mesin & transmisi", items: [
+            {id: "tuneup", nm: "Tune up", note: "busi, klep, throttle / karbu", p: [90000, 80000, 130000]},
+            {id: "injeksi", nm: "Bersih injeksi / karburator", p: [75000, 65000, 100000]},
+            {id: "cvt", nm: "Servis CVT", note: "bersih + cek v-belt & roller", p: [60000, null, null]},
+            {id: "rantai", nm: "Ganti rantai & gir set", note: "part standar", p: [null, 185000, 320000]},
+          ]
+        },
+        {
+          group: "Rem, ban & listrik", items: [
+            {id: "kampas", nm: "Ganti kampas rem (1 roda)", p: [50000, 45000, 70000]},
+            {id: "minyakrem", nm: "Kuras minyak rem", p: [35000, 35000, 45000]},
+            {id: "tambal", nm: "Tambal ban tubeless", p: [20000, 20000, 25000]},
+            {id: "aki", nm: "Ganti aki", note: "aki kering standar", p: [230000, 210000, 320000]},
+            {id: "kelistrikan", nm: "Cek kelistrikan", note: "mulai dari", p: [40000, 40000, 50000]},
+          ]
+        },
+      ]
+    };
+    /* ===================================================================== */
+
+    const $ = (s, el = document) => el.querySelector(s);
+    const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+    const rp = n => "Rp" + n.toLocaleString("id-ID");
+    const waLink = (text = "") => `https://wa.me/${CONFIG.whatsapp}${text ? "?text=" + encodeURIComponent(text) : ""}`;
+    const DAYS = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    const TYPE_IDX = {matic: 0, bebek: 1, sport: 2};
+
+    /* --- fill static data --- */
+    document.title = `${CONFIG.name} — Servis, Tune Up & Spare Part`;
+    $("[data-name]").firstChild.textContent = CONFIG.name;
+    $("[data-tagline]").textContent = CONFIG.tagline;
+    $$("[data-name-plain]").forEach(e => e.textContent = CONFIG.name);
+    $$("[data-address]").forEach(e => e.textContent = CONFIG.address);
+    $$("[data-tel]").forEach(e => {e.textContent = CONFIG.phoneDisplay; e.href = "tel:+" + CONFIG.whatsapp;});
+    $("#topAddr").textContent = CONFIG.address;
+    $("[data-payment]").textContent = CONFIG.payment;
+    $("#waBtn").href = $("#fab").href = waLink(`Halo ${CONFIG.name}, saya mau tanya servis motor.`);
+    $("#mapsBtn").href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.mapsQuery);
+    $("#mapFrame").src = "https://maps.google.com/maps?q=" + encodeURIComponent(CONFIG.mapsQuery) + "&z=15&output=embed";
+    $("#yr").textContent = new Date().getFullYear();
+
+    /* --- hours + open status --- */
+    (function hours() {
+      const now = new Date(), today = now.getDay();
+      const order = [1, 2, 3, 4, 5, 6, 0];
+      $("#hours").innerHTML = order.map(d => {
+        const h = CONFIG.hours[d];
+        return `<tr class="${d === today ? "today" : ""}"><td>${DAYS[d]}${d === today ? " (hari ini)" : ""}</td><td>${h ? h[0] + "–" + h[1] : "Tutup"}</td></tr>`;
+      }).join("");
+      // ringkas untuk section lokasi
+      const wk = CONFIG.hours[1], sat = CONFIG.hours[6];
+      $("#hoursShort").textContent = `Senin–Jumat ${wk ? wk.join("–") : "tutup"} · Sabtu ${sat ? sat.join("–") : "tutup"} · Minggu ${CONFIG.hours[0] ? CONFIG.hours[0].join("–") : "tutup"}`;
+
+      const toMin = s => {const [a, b] = s.split(":").map(Number); return a * 60 + b;};
+      const mins = now.getHours() * 60 + now.getMinutes();
+      const h = CONFIG.hours[today];
+      const st = $("#status"), tx = $("#statusText");
+      if (h && mins >= toMin(h[0]) && mins < toMin(h[1])) {
+        st.classList.add("open"); tx.textContent = `Buka sekarang · tutup pukul ${h[1]}`;
+      } else {
+        st.classList.add("closed");
+        let next = null;
+        for (let i = 0; i < 8; i++) {
+          const d = (today + i) % 7, hh = CONFIG.hours[d];
+          if (!hh) continue;
+          if (i === 0 && mins >= toMin(hh[0])) continue;
+          next = (i === 0 ? "hari ini" : i === 1 ? "besok" : DAYS[d]) + " pukul " + hh[0]; break;
+        }
+        tx.textContent = "Tutup sekarang" + (next ? ` · buka ${next}` : "");
+      }
+    })();
+
+    /* --- estimator --- */
+    let motorType = localStorage.getItem("bm_type") || "matic";
+    let selected = new Set(JSON.parse(localStorage.getItem("bm_sel") || "[]"));
+    const allItems = CONFIG.prices.flatMap(g => g.items);
+
+    function renderPrices() {
+      const t = TYPE_IDX[motorType];
+      $$("#seg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.type === motorType));
+      // drop items that don't apply to this type
+      [...selected].forEach(id => {const it = allItems.find(i => i.id === id); if (!it || it.p[t] == null) selected.delete(id);});
+      $("#priceList").innerHTML = CONFIG.prices.map(g => {
+        const rows = g.items.filter(i => i.p[t] != null).map(i => `
+      <label class="row">
+        <input type="checkbox" value="${i.id}" ${selected.has(i.id) ? "checked" : ""}>
+        <span class="nm">${i.nm}${i.note ? `<small>${i.note}</small>` : ""}</span>
+        <span class="pr">${rp(i.p[t])}</span>
+      </label>`).join("");
+        return rows ? `<div class="price-group"><h4>${g.group}</h4>${rows}</div>` : "";
+      }).join("");
+      renderSummary();
+    }
+    function renderSummary() {
+      const t = TYPE_IDX[motorType];
+      const picked = allItems.filter(i => selected.has(i.id) && i.p[t] != null);
+      $("#sumList").innerHTML = picked.length
+        ? picked.map(i => `<li><span>${i.nm}</span><span>${rp(i.p[t])}</span></li>`).join("")
+        : `<li class="empty">Belum ada pekerjaan dipilih.</li>`;
+      $("#sumTotal").textContent = rp(picked.reduce((s, i) => s + i.p[t], 0));
+      localStorage.setItem("bm_type", motorType);
+      localStorage.setItem("bm_sel", JSON.stringify([...selected]));
+    }
+    $("#seg").addEventListener("click", e => {const b = e.target.closest("button"); if (!b) return; motorType = b.dataset.type; renderPrices();});
+    $("#priceList").addEventListener("change", e => {if (e.target.checked) selected.add(e.target.value); else selected.delete(e.target.value); renderSummary();});
+    $$("[data-preset]").forEach(a => a.addEventListener("click", () => {selected.add(a.dataset.preset); renderPrices();}));
+    $("#toBooking").addEventListener("click", () => {
+      const t = TYPE_IDX[motorType];
+      const picked = allItems.filter(i => selected.has(i.id));
+      if (picked.length && !$("#fNote").value.trim()) $("#fNote").value = picked.map(i => i.nm).join(", ");
+    });
+    renderPrices();
+
+    /* --- produk + stok dari server --- */
+    const CAT_LABEL = {ban: "Ban luar", bandalam: "Ban dalam", oli: "Oli", lain: "Lainnya"};
+    const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+    let products = [], pcat = "semua", pq = "";
+    let cart = JSON.parse(localStorage.getItem("fly_cart") || "{}"); // {id: qty}
+    const saveCart = () => localStorage.setItem("fly_cart", JSON.stringify(cart));
+    const byId = id => products.find(p => p.id === id);
+
+    async function loadProducts() {
+      try {
+        const r = await fetch("/api/products", {cache: "no-store"});
+        if (!r.ok) throw new Error();
+        products = await r.json();
+        // buang isi keranjang yang sudah tidak tersedia / melebihi stok
+        for (const id of Object.keys(cart)) {
+          const p = byId(id);
+          if (!p || p.stok <= 0) delete cart[id]; else if (cart[id] > p.stok) cart[id] = p.stok;
+        }
+        saveCart(); renderProducts(); renderCart();
+      } catch {
+        $("#pgrid").innerHTML = location.protocol === "file:"
+          ? `<div class="pstate">Stok tampil kalau website dibuka lewat server. Jalankan <code>node server.js</code> lalu buka <code>http://localhost:3000</code>.</div>`
+          : `<div class="pstate">Stok gagal dimuat. Coba muat ulang halaman, atau tanya lewat WhatsApp.</div>`;
+      }
+    }
+    function stokLabel(p) {
+      if (p.stok <= 0) return `<span class="stok out">Stok habis</span>`;
+      if (p.stok <= 3) return `<span class="stok low">Sisa ${p.stok}</span>`;
+      return `<span class="stok">Stok ${p.stok}</span>`;
+    }
+    function renderProducts() {
+      $$("#ptabs button").forEach(b => b.setAttribute("aria-pressed", b.dataset.cat === pcat));
+      const q = pq.toLowerCase();
+      const list = products.filter(p => (pcat === "semua" || p.cat === pcat) && (!q || (p.nm + " " + p.ukuran).toLowerCase().includes(q)));
+      if (!list.length) { $("#pgrid").innerHTML = `<div class="pstate">Tidak ada barang yang cocok. Tanyakan lewat WhatsApp, mungkin bisa kami pesankan.</div>`; return; }
+      $("#pgrid").innerHTML = list.map(p => {
+        const inCart = cart[p.id] || 0, out = p.stok <= 0, full = inCart >= p.stok;
+        const ask = waLink(`Halo ${CONFIG.name}, saya mau tanya ${p.nm} ${p.ukuran}.`);
+        return `
+    <article class="pcard ${out ? "is-out" : ""}">
+      <span class="cat">${CAT_LABEL[p.cat] || "Lainnya"}</span>
+      <h3>${esc(p.nm)}</h3>
+      ${p.ukuran ? `<span class="uk">${esc(p.ukuran)}</span>` : ""}
+      ${stokLabel(p)}
+      <div class="foot">
+        <span class="harga">${p.harga ? `<small>harga</small>${rp(p.harga)}` : `<small>harga</small>Tanya`}</span>
+        ${out ? `<a class="ask" target="_blank" rel="noopener" href="${ask}">Tanya inden →</a>`
+              : `<button class="addbtn ${inCart ? "in" : ""}" type="button" data-add="${p.id}" ${full ? "disabled" : ""}>${inCart ? `+ Tambah (${inCart})` : "+ Keranjang"}</button>`}
+      </div>
+    </article>`;
+      }).join("");
+    }
+    function cartLines() { return Object.entries(cart).map(([id, qty]) => ({p: byId(id), qty})).filter(l => l.p); }
+    function renderCart() {
+      const lines = cartLines();
+      const n = lines.reduce((s, l) => s + l.qty, 0), total = lines.reduce((s, l) => s + (l.p.harga || 0) * l.qty, 0);
+      const tanya = lines.some(l => !l.p.harga);
+      $("#cartbar").classList.toggle("show", n > 0); document.body.classList.toggle("has-cart", n > 0);
+      $("#cartCount").textContent = `${n} barang`;
+      $("#cartTotal").textContent = rp(total) + (tanya ? " + harga dikonfirmasi" : "");
+      $("#coLines").innerHTML = lines.length ? lines.map(({p, qty}) => `
+        <div class="cline">
+          <span class="nm">${esc(p.nm)}<small>${esc(p.ukuran)} · sisa stok ${p.stok}</small></span>
+          <span class="qty"><button type="button" data-dec="${p.id}" aria-label="Kurangi">−</button><span>${qty}</span><button type="button" data-inc="${p.id}" ${qty >= p.stok ? "disabled" : ""} aria-label="Tambah">+</button></span>
+          <span class="pr">${p.harga ? rp(p.harga * qty) : "Tanya"}</span>
+        </div>`).join("") : `<p style="color:var(--muted)">Keranjang kosong.</p>`;
+      $("#coTotal").textContent = rp(total);
+      $("#coSubmit").disabled = !lines.length;
+    }
+    function changeQty(id, d) {
+      const p = byId(id); if (!p) return;
+      const q = Math.max(0, Math.min(p.stok, (cart[id] || 0) + d));
+      if (q) cart[id] = q; else delete cart[id];
+      saveCart(); renderProducts(); renderCart();
+    }
+    $("#ptabs").addEventListener("click", e => {const b = e.target.closest("button"); if (!b) return; pcat = b.dataset.cat; renderProducts();});
+    $("#psearch").addEventListener("input", e => {pq = e.target.value.trim(); renderProducts();});
+    $("#pgrid").addEventListener("click", e => {const b = e.target.closest("[data-add]"); if (b) changeQty(b.dataset.add, 1);});
+    $("#coLines").addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      if (b.dataset.inc) changeQty(b.dataset.inc, 1);
+      if (b.dataset.dec) changeQty(b.dataset.dec, -1);
+    });
+
+    const dlg = $("#coDialog");
+    function openCart() {
+      $("#coForm").hidden = false; $("#coDone").hidden = true; $("#coTitle").textContent = "Keranjang";
+      $("#coAlert").classList.remove("show"); renderCart(); dlg.showModal();
+    }
+    $("#openCart").addEventListener("click", openCart);
+    $$("[data-close]", dlg).forEach(b => b.addEventListener("click", () => dlg.close()));
+    dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+
+    $("#coForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const nama = $("#cName").value.trim(), hp = $("#cPhone").value.trim();
+      $("#cName").closest(".field").classList.toggle("err", !nama);
+      const hpBad = hp.replace(/\D/g, "").length < 9;
+      $("#cPhone").closest(".field").classList.toggle("err", hpBad);
+      if (!nama || hpBad) return;
+      const btn = $("#coSubmit"); btn.disabled = true; btn.textContent = "Memproses…";
+      const items = cartLines().map(l => ({id: l.p.id, qty: l.qty}));
+      const ambil = $("input[name=ambil]:checked").value;
+      try {
+        const r = await fetch("/api/orders", {method: "POST", headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({nama, hp, catatan: $("#cNote").value.trim(), ambil, items})});
+        const d = await r.json();
+        if (!r.ok) {
+          $("#coAlert").textContent = d.error || "Pesanan gagal. Coba lagi.";
+          $("#coAlert").classList.add("show");
+          await loadProducts(); // ambil stok terbaru
+          return;
+        }
+        const pesan = [
+          `Halo ${CONFIG.name}, saya sudah pesan lewat website.`, ``,
+          `Kode pesanan: ${d.kode}`, `Nama: ${nama}`,
+          ...d.items.map(i => `- ${i.nm} ${i.ukuran} × ${i.qty}`),
+          d.total ? `Total: ${rp(d.total)}` : "",
+          ambil === "pasang" ? "Minta sekalian dipasang." : "Diambil saja.",
+        ].filter(Boolean).join("\n");
+        cart = {}; saveCart();
+        $("#coForm").hidden = true; $("#coDone").hidden = false; $("#coTitle").textContent = "Pesanan masuk";
+        $("#doneKode").textContent = d.kode; $("#doneWa").href = waLink(pesan);
+        await loadProducts();
+      } catch {
+        $("#coAlert").textContent = "Tidak bisa terhubung ke server. Coba lagi sebentar.";
+        $("#coAlert").classList.add("show");
+      } finally { btn.disabled = false; btn.textContent = "Pesan sekarang"; }
+    });
+    $$("#coForm input").forEach(i => i.addEventListener("input", () => i.closest(".field")?.classList.remove("err")));
+
+    loadProducts();
+    setInterval(() => { if (!dlg.open && document.visibilityState === "visible") loadProducts(); }, 20000);
+
+    /* --- booking form → WhatsApp --- */
+    const dateIn = $("#fDate");
+    const todayStr = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    dateIn.min = todayStr;
+    if (!dateIn.value) dateIn.value = todayStr;
+
+    $("#bookForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      let ok = true;
+      const req = [["#fName"], ["#fMotor"], ["#fDate"]];
+      req.forEach(([s]) => {const f = $(s).closest(".field"); const bad = !$(s).value.trim(); f.classList.toggle("err", bad); if (bad) ok = false;});
+      // closed day check
+      if (dateIn.value) {
+        const d = new Date(dateIn.value + "T00:00").getDay();
+        const f = dateIn.closest(".field");
+        if (!CONFIG.hours[d]) {f.classList.add("err"); $("#dateErr").textContent = `Hari ${DAYS[d]} bengkel tutup.`; ok = false;}
+        else $("#dateErr").textContent = "Pilih tanggal.";
+      }
+      if (!ok) {$(".field.err input, .field.err select")?.focus(); return;}
+
+      const t = TYPE_IDX[motorType];
+      const picked = allItems.filter(i => selected.has(i.id) && i.p[t] != null);
+      const tgl = new Date(dateIn.value + "T00:00").toLocaleDateString("id-ID", {weekday: "long", day: "numeric", month: "long", year: "numeric"});
+      // buka tab WhatsApp dulu (supaya tidak diblokir browser), lalu simpan booking ke sistem bengkel
+      const waWin = window.open("about:blank", "_blank");
+      if (waWin) waWin.opener = null;
+      let kode = "";
+      try {
+        const r = await fetch("/api/bookings", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({
+          nama: $("#fName").value.trim(), hp: $("#fPhone").value.trim(), motor: $("#fMotor").value.trim(), jenis: motorType,
+          plat: $("#fPlate").value.trim(), tgl: dateIn.value, jam: $("#fTime").value, keluhan: $("#fNote").value.trim(),
+          layanan: picked.map(i => ({nm: i.nm, harga: i.p[t]}))})});
+        if (r.ok) kode = (await r.json()).kode;
+      } catch { /* server mati / dibuka dari file: tetap lanjut lewat WhatsApp */ }
+      const lines = [
+        `Halo ${CONFIG.name}, saya mau booking servis.`,
+        kode && `Kode booking: ${kode}`,
+        ``,
+        `Nama: ${$("#fName").value.trim()}`,
+        $("#fPhone").value.trim() && `No. WA: ${$("#fPhone").value.trim()}`,
+        `Motor: ${$("#fMotor").value.trim()} (${motorType})`,
+        $("#fPlate").value.trim() && `Plat: ${$("#fPlate").value.trim().toUpperCase()}`,
+        `Tanggal: ${tgl}, ${$("#fTime").value}`,
+        $("#fNote").value.trim() && `Keluhan: ${$("#fNote").value.trim()}`,
+        picked.length && `Estimasi dari website: ${rp(picked.reduce((s, i) => s + i.p[t], 0))}`,
+      ].filter(Boolean);
+      const url = waLink(lines.join("\n"));
+      if (waWin) waWin.location.href = url; else location.href = url;
+      if (kode) {
+        const note = $("#bookForm .form-foot p");
+        note.innerHTML = `Booking tercatat dengan kode <b class="mono">${kode}</b>. Kirim pesan WhatsApp-nya supaya jam kedatangan kami konfirmasi.`;
+      }
+    });
+    $$("#bookForm input").forEach(i => i.addEventListener("input", () => i.closest(".field").classList.remove("err")));
+  </script>
+</body>
+
+</html>
